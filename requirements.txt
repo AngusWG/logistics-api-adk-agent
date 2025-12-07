@@ -3,3 +3,6 @@ fire
 PyYAML
 traceback-with-variables
 python-dotenv
+flask==3.1.2
+google==3.0.0
+requests==2.32.5

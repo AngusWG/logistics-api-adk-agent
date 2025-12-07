@@ -5,7 +5,6 @@ pytest-timeout
 pytest-benchmark
 isort
 typing_extensions
-gevent
 
 # Linting
 flake8
