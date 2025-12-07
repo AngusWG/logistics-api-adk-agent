@@ -1,0 +1,28 @@
+[html]
+directory = logistics_api_adk_agent_test_coverage_report
+title = logistics_api_adk_agent_frog_coverage_report
+
+[run]
+source = logistics_api_adk_agent
+concurrency = thread, gevent
+
+[report]
+omit =
+    *\_version.py
+    */_version.py
+    *pb2.py
+    *pb2_grpc.py
+
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    if self.debug:
+    if conf.DEBUG
+    raise AssertionError
+    raise NotImplementedError
+    if 0:
+    if __name__ == .__main__.:
+    if TYPE_CHECKING:
+
+fail_under = 80
+# coverage run --source grpc_frog -m pytest & coverage combine  & coverage report

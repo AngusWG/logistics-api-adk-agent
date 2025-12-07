@@ -1,0 +1,5 @@
+ipython
+fire
+PyYAML
+traceback-with-variables
+python-dotenv
