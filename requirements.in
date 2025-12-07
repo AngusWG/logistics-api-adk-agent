@@ -1,0 +1,9 @@
+# python -m piptools compile --no-annotate
+ipython
+fire
+PyYAML
+traceback-with-variables
+python-dotenv
+flask
+google
+requests
