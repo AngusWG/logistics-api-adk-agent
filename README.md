@@ -4,7 +4,12 @@
 
 AxonScale Interview Question: Google AI Agent
 
-* TODO
+- [ ] 项目功能了解
+  - [ ] gemini 怎么和本地服务通信
+  - [ ] demo 测试
+- [ ] 架构模块明确
+  - [ ] 架构图 用例图 [[架构图]]
+- [ ] 待办清单
 
 ## Features
 
@@ -13,6 +18,8 @@ AxonScale Interview Question: Google AI Agent
 * TODO
 
 ---
+
+## 开发须知
 
 * [Black formatter](https://github.com/psf/black)
 
