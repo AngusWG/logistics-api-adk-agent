@@ -1,9 +1,9 @@
-# python -m piptools compile --no-annotate
+# python -m piptools compile
 ipython
 fire
 PyYAML
 traceback-with-variables
 python-dotenv
 flask
-google
+google-genai
 requests
