@@ -50,13 +50,13 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr *_coverage_report
 
 format: ## format python code
-	black logistics_api_adk_agent tests
-	isort logistics_api_adk_agent tests --profile black
+	black logistics_api_adk_agent tests docs
+	isort logistics_api_adk_agent tests docs --profile black
 
 lint: ## check style with flake8
-	flake8 logistics_api_adk_agent tests
-	black logistics_api_adk_agent tests --check
-	isort logistics_api_adk_agent tests --check-only --profile black
+	flake8 logistics_api_adk_agent tests docs
+	black logistics_api_adk_agent tests docs --check
+	isort logistics_api_adk_agent tests docs --check-only --profile black
 
 test: ## run tests quickly with the default Python
 	pytest

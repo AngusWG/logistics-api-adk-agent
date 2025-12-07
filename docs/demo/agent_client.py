@@ -5,11 +5,12 @@
 # @Email  : z740713651@outlook.com
 # @File   : agent_client.py
 # agent_client.py
-from google import genai
-from google.genai import types
-from logistics_tools import TOOL_LIST, AVAILABLE_FUNCTIONS
 import json
 import os
+
+from google import genai
+from google.genai import types
+from logistics_tools import AVAILABLE_FUNCTIONS, TOOL_LIST
 
 # 确保设置了 GEMINI_API_KEY 环境变量
 try:
@@ -28,9 +29,9 @@ def run_agent_workflow(prompt: str):
     # 1. 第一次调用：发送用户请求和工具列表
     print("\n--- 1. 发送请求给 Gemini，进行意图识别 ---")
     response = client.models.generate_content(
-        model='gemini-2.5-flash',
+        model="gemini-2.5-flash",
         contents=prompt,
-        config=types.GenerateContentConfig(tools=TOOL_LIST)
+        config=types.GenerateContentConfig(tools=TOOL_LIST),
     )
 
     # 2. 检查模型是否决定调用工具
@@ -61,8 +62,7 @@ def run_agent_workflow(prompt: str):
             # 准备函数调用的结果对象
             function_responses.append(
                 types.Part.from_function_response(
-                    name=func_name,
-                    response={"result": tool_output}  # 将工具输出作为结果
+                    name=func_name, response={"result": tool_output}  # 将工具输出作为结果
                 )
             )
         else:
@@ -75,13 +75,13 @@ def run_agent_workflow(prompt: str):
     contents = [
         types.Content(role="user", parts=[types.Part.from_text(prompt)]),
         response.candidates[0].content,
-        types.Content(role="tool", parts=function_responses)
+        types.Content(role="tool", parts=function_responses),
     ]
 
     final_response = client.models.generate_content(
-        model='gemini-2.5-flash',
+        model="gemini-2.5-flash",
         contents=contents,
-        config=types.GenerateContentConfig(tools=TOOL_LIST)
+        config=types.GenerateContentConfig(tools=TOOL_LIST),
     )
 
     return final_response.text
@@ -91,7 +91,7 @@ def run_agent_workflow(prompt: str):
 # 运行示例
 # ----------------------------------------------------
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # 确保 app.py 服务端已在另一个终端启动！
 
     # 案例 1: 查询状态

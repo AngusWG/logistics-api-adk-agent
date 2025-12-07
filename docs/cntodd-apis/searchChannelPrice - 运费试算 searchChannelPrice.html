@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>跨境伙伴 T6软件 API 接口文档</title>
+	<link rel="stylesheet" href="/resources/css/doc.css" media="all">
+	<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<!-- 屏蔽自动识别电话、邮箱、网站地址 -->
+<meta name="format-detection" content="telephone=no,email=no,address=no"> 
+<link rel="stylesheet" href="/resources/layui-v2.5.6/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="/resources/layuiAdmin/style/admin.css" media="all">
+<!-- 重写样式 -->
+<link rel="stylesheet" href="/resources/css/customize.css" media="all">	<style>
+
+	h3{
+		font-weight: bold;
+	}
+	
+	td [data-api]{
+		color: blue;
+		cursor: pointer;
+	}
+	
+	.layui-card-header{
+		padding-left: 10px;
+		background-color: #fff;
+		color: #009688;
+		cursor: pointer;
+	}
+	.layui-card-body{
+		padding: 0 5px;
+	}
+	.apilist{
+		display: block;
+		position: relative; 
+		text-align: center;
+		font-size: 18px;
+		line-height: 28px;
+		padding: 7px 0;
+		color: #009688;
+		background-color: #fff;
+		-moz-box-shadow: 3px 0 5px #ccc; /* 老的 Firefox */
+		box-shadow: 3px 0 5px #ccc;
+		z-index: 999;
+		margin-bottom: 5px;
+	}
+	.apiname{
+		display: block;
+		position: relative; 
+		text-align: center;
+		font-size: 18px;
+		line-height: 28px;
+		padding: 10px 0;
+		color: #009688;
+		background-color: #fff;
+		-moz-box-shadow: 3px 0 5px #ccc; /* 老的 Firefox */
+		box-shadow: 3px 0 5px #ccc;
+		z-index: 999;
+		margin-bottom: 5px;
+	}
+	
+	.apiname:before, .apiname:after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		background: #ccc; 
+		width: 30%;
+		height: 1px;
+	}
+	.apiname:before{
+		left: 2%;
+	}
+	.apiname:after{
+		right: 2%;
+	}
+	#api_list li{
+		line-height: 32px;
+		height: 32px;
+		border-left: 5px solid #009688;
+		padding: 3px 5px;
+		margin-bottom: 10px;
+		background-color: #f0f0f0;
+		cursor: pointer;
+	}
+	#api_list li:hover{
+		font-weight: bold;
+	}
+	.layui-show{
+		font-weight: bold;
+		color: #009688;
+	}
+	html{
+		background-color: #f0f0f0;
+	}
+</style>
+</head>
+<body>
+	
+   	
+	<div class="layui-main">
+		<div class="layui-row layui-col-space10">
+  		<div class="layui-col-sm3" style=''>
+		  	<div class="apilist">API 接口文档</div>
+		  	<div style="background-color:#fff; margin-top: 5px; padding: 5px;">
+			  	<ul id="api_list" class="layui-unselect" outheight="65">
+			    		<li data-api="createOrder" >批量下单 Create Order</li>
+			    		<li data-api="createFbaOrder" >Fba批量下单 Create Fba Order</li>
+			    		<li data-api="label" >获取标签 Label</li>
+			    		<li data-api="Express" >获取面单 Express</li>
+			    		<li data-api="delete" >删除运单 delete</li>
+			    		<li data-api="waybillnumber" >获取单号 Waybillnumber</li>
+			    		<li data-api="pageOrders" >分页查询运单 pageOrders</li>
+			    		<li data-api="orderAnnexs" >获取运单附件 orderAnnexs</li>
+			    		<li data-api="orderRecSheets" >获取运单费用 orderRecSheets</li>
+			    		<li data-api="searchChannelPrice" >运费试算 searchChannelPrice</li>
+			    		<li data-api="orderAmt" >获取运单预扣金额 orderAmt</li>
+			    		<li data-api="orderVolume" >获取运单收货材积信息 orderVolume</li>
+			    		<li data-api="orderPickup" >获取运单提货信息 orderPickup</li>
+			    		<li data-api="equipReceipt" >设备收货  equipReceipt</li>
+			    		<li data-api="uploadBoxPicture" >上传收货图片  uploadBoxPicture</li>
+			    		<li data-api="channel" >查询渠道 Channel</li>
+			    		<li data-api="insurance" >查询投保类型  Insurance</li>
+			    		<li data-api="productType" >查询物品类别  Product Type</li>
+			    		<li data-api="declareType" >查询报关类型  Declare Type</li>
+			    		<li data-api="customsType" >查询清关方式  Customs Type</li>
+			    		<li data-api="destination" >查询目的地  Destination</li>
+			    		<li data-api="currency" >查询币别  Currency</li>
+			    		<li data-api="termsofsalecode" >查询销售条款  Terms of sale</li>
+			    		<li data-api="exportreasoncode" >查询出口原因  Export reason</li>
+			    		<li data-api="track" >查询轨迹  Track</li>
+			    		<li data-api="price" >查询报价  Price</li>
+			    		<li data-api="dataPush" >数据推送 Data Push</li>
+			    		<li data-api="receivePlatformData" >接收平台信息 Receive PlatformData</li>
+			  	</ul>
+			  </div>
+		</div>
+
+  		<div class="layui-col-sm9" style="padding-top: 0px;">
+  				<div class="apiname">运费试算 searchChannelPrice</div>
+<div outHeight="53">
+	<div class="layui-card">
+		<div class="layui-card-header layui-unselect">
+			接口说明
+			<i class="layui-icon layui-icon-down"></i>
+		</div>
+		<div class="layui-card-body">
+			<div>通过此接口可实现试算指定渠道价格</div>
+			<div style="color:red;">重要提示：系统需包含上下游板块，否则无法正常使用该接口。</div>
+			<br>
+			<div>接口地址</div>
+			<div>
+				运费试算： <b>http://www.cntodd.top//api/searchChannelPrice</b>
+			</div>
+			<div>
+				请求方式： <b>POST</b>
+			</div>
+		</div>
+	</div>
+	
+	<div class="layui-card">
+		<div class="layui-card-header layui-unselect">
+			请求参数
+			<i class="layui-icon layui-icon-down"></i>
+		</div>
+		<div class="layui-card-body">
+			<h3>请求字段说明</h3>
+			<table class="layui-table" lay-size="sm">
+				<thead>
+					<tr>
+						<th colspan='3' style='width:220px;'>字段名称</th>
+						<th style='width:80px;'>字段类型</th>
+						<th style='width:60px;'>字段长度</th>
+						<th style='width:60px;'>是否必需</th>
+						<th>字段说明</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td colspan='3'>authorization</td>
+						<td>JSONObject</td>
+						<td></td>
+						<td></td>
+						<td>接口效验信息</td>
+					</tr>
+					<tr>
+						<td colspan='2' style='width:10px;'></td>
+						<td>code</td>
+						<td>String</td>
+						<td>5-20</td>
+						<td>Y</td>
+						<td>客户编码</td>
+					</tr>
+					<tr>
+						<td colspan='2'></td>
+						<td>token</td>
+						<td>String</td>
+						<td>50</td>
+						<td>Y</td>
+						<td>API授权码</td>
+					</tr>
+					<tr>
+						<td colspan='3'>datas</td>
+						<td>JSONArray</td>
+						<td></td>
+						<td></td>
+						<td>本次提交数据集</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan='2'>order</td>
+						<td>JSONObject</td>
+						<td></td>
+						<td></td>
+						<td>运费试算数据</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>channelid</td>
+						<td>String</td>
+						<td>20</td>
+						<td>Y</td>
+						<td>运费试算渠道</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>customernumber1</td>
+						<td>String</td>
+						<td>50</td>
+						<td>Y</td>
+						<td>客户参考号1</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>customernumber2</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>客户参考号2</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>fbanumber</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>FBA ID</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>number</td>
+						<td>Integer</td>
+						<td></td>
+						<td>Y</td>
+						<td>总件数</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>isbattery</td>
+						<td>Integer</td>
+						<td></td>
+						<td>Y</td>
+						<td>是否带电(1：带电，2：不带电)</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>isinsurance</td>
+						<td>Integer</td>
+						<td></td>
+						<td></td>
+						<td>是否投保(1：投保，2：不投保)</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>insurancevalue</td>
+						<td>Double</td>
+						<td></td>
+						<td></td>
+						<td>投保金额, <span style='color:red;'>投保则必需</span></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>insurancetypepkid</td>
+						<td>Integer</td>
+						<td></td>
+						<td></td>
+						<td>投保类型 通过调用<span data-api='insurance'> [ 查询投保类型 ] </span>接口获取, <span style='color:red;'>投保则必需</span></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>insurancecurrency</td>
+						<td>String</td>
+						<td></td>
+						<td></td>
+						<td>投保币别 通过调用<span data-api='currency'> [ 查询币别 ] </span>接口获取, <span style='color:red;'>投保则必需</span></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>forecastweight</td>
+						<td>Double</td>
+						<td></td>
+						<td>Y</td>
+						<td>预报总重量(KG)</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>forecastsquare</td>
+						<td>Double</td>
+						<td></td>
+						<td></td>
+						<td>预报方数</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>packagetypecode</td>
+						<td>String</td>
+						<td>1</td>
+						<td></td>
+						<td>包裹类型  [ G：礼品，C：商品货样，D：文件，O：其它 ]</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>goodstypecode</td>
+						<td>String</td>
+						<td>3</td>
+						<td></td>
+						<td>货物类型  [ WPX：包裹，DOC：文件，PAK：PAK袋 ]</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>declaretypepkid</td>
+						<td>Integer</td>
+						<td></td>
+						<td></td>
+						<td>报关类型 通过调用<span data-api='declareType'> [ 查询报关类型 ] </span>接口获取</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>termsofsalecode</td>
+						<td>String</td>
+						<td>3</td>
+						<td></td>
+						<td>销售条款  通过调用<span data-api='termsofsalecode'> [ 查询销售条款 ] </span> 接口获取</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>exportreasoncode</td>
+						<td>String</td>
+						<td>20</td>
+						<td></td>
+						<td>出口原因   通过调用<span data-api='exportreasoncode'> [ 查询出口原因 ] </span> 接口获取</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>producttypepkid</td>
+						<td>String</td>
+						<td>20</td>
+						<td></td>
+						<td>物品类别   通过调用<span data-api='productType'> [ 查询物品类别 ] </span> 接口获取</td>
+					</tr>
+					
+					<!-- 运费支付方式 -->
+					<tr>
+						<td></td>
+						<td></td>
+						<td>feepaytype</td>
+						<td>String</td>
+						<td>2</td>
+						<td></td>
+						<td>运费支付方式 [ CC：到付，PP：预付，TP：第三方 ]</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>feepayname</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>运费支付公司或名称</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>feepayaccountnumber</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>运费支付账号</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>feepaycountrycode</td>
+						<td>String</td>
+						<td>5</td>
+						<td></td>
+						<td>运费支付账号对应国家</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>feepaypostcode</td>
+						<td>String</td>
+						<td>20</td>
+						<td></td>
+						<td>运费支付账号对应邮编</td>
+					</tr>
+					
+					<!-- 税金支付方式 -->
+					<tr>
+						<td></td>
+						<td></td>
+						<td>taxpaytype</td>
+						<td>String</td>
+						<td>2</td>
+						<td></td>
+						<td>税金支付方式  [ CC：到付，PP：预付，TP：第三方 ]</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>taxpayname</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>税金支付公司或名称</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>taxpayaccountnumber</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>税金支付账号</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>taxpaycountrycode</td>
+						<td>String</td>
+						<td>5</td>
+						<td></td>
+						<td>税金支付账号对应国家</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>taxpayzipcode</td>
+						<td>String</td>
+						<td>20</td>
+						<td></td>
+						<td>税金支付账号对应邮编</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>note</td>
+						<td>String</td>
+						<td>255</td>
+						<td></td>
+						<td>运单备注</td>
+					</tr>
+					
+					<!-- 收件人信息 -->
+					<tr>
+						<td></td><td></td>
+						<td>countrycode</td>
+						<td>String</td>
+						<td>2</td>
+						<td>Y</td>
+						<td>收件人国家编码</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>fbawarehousecode</td>
+						<td>String</td>
+						<td>20</td>
+						<td></td>
+						<td>FBA仓码</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneeaddresstype</td>
+						<td>String</td>
+						<td>20</td>
+						<td></td>
+						<td>收件人地址类型</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneename</td>
+						<td>String</td>
+						<td>100</td>
+						<td>Y</td>
+						<td>收件人名称</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneecorpname</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>收件人公司</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>consigneeaddress1</td>
+						<td>String</td>
+						<td>100</td>
+						<td>Y</td>
+						<td>收件人地址1</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneeaddress2</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>收件人地址2</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneeaddress3</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>收件人地址3</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneecity</td>
+						<td>String</td>
+						<td>50</td>
+						<td>Y</td>
+						<td>收件人城市</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneezipcode</td>
+						<td>String</td>
+						<td>10</td>
+						<td>Y</td>
+						<td>收件人邮编</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneeprovince</td>
+						<td>String</td>
+						<td>50</td>
+						<td>Y</td>
+						<td>收件人省州</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneearea</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>收件人区</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneetel</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>收件人电话</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneemobile</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>收件人手机</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneehousenumber</td>
+						<td>String</td>
+						<td>20</td>
+						<td></td>
+						<td>收件人门牌号</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneetaxnumber</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>收件人税号</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>consigneeemail</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>收件人邮箱</td>
+					</tr>
+					<!-- 寄件人信息 -->
+					<tr>
+						<td></td><td></td>
+						<td>senderaddresstype</td>
+						<td>String</td>
+						<td>20</td>
+						<td></td>
+						<td>寄件人地址类型</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>sendercountrycode</td>
+						<td>String</td>
+						<td>2</td>
+						<td></td>
+						<td>寄件人国家编码</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>sendername</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>寄件人名称</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>sendercorpname</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>寄件人公司</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>senderaddress1</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>寄件人地址1</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>senderaddress2</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>寄件人地址2</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>senderaddress3</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>寄件人地址3</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>sendercity</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>寄件人城市</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>senderzipcode</td>
+						<td>String</td>
+						<td>10</td>
+						<td></td>
+						<td>寄件人邮编</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>senderprovince</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>寄件人省州</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>senderarea</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>寄件人区</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>sendertel</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>寄件人电话</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>sendermobile</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>寄件人手机</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>sendetaxnumber</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>寄件人税号</td>
+					</tr>
+					
+					<!-- 另通知人/进口商信息 -->
+					<tr>
+						<td></td><td></td>
+						<td>notifyname</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>另通知人/进口商名称</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>notifycorpname</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>另通知人/进口商公司</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>notifycountrycode</td>
+						<td>String</td>
+						<td>5</td>
+						<td></td>
+						<td>另通知人/进口商国家</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>notifyaddress1</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>另通知人/进口商地址1</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>notifyaddress2</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>另通知人/进口商地址2</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>notifyaddress3</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>另通知人/进口商地址3</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>notifycity</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>另通知人/进口商城市</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>notifyzipcode</td>
+						<td>String</td>
+						<td>20</td>
+						<td></td>
+						<td>另通知人/进口商邮编</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>notifyprovince</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>另通知人/进口商省州</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>notifytel</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>另通知人/进口商电话</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>notifymoble</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>另通知人/进口商手机</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>notifyfax</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>另通知人/进口商传真</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>notifytaxnumber</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>另通知人/进口商税号</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>notifyemail</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>另通知人/进口商邮箱</td>
+					</tr>
+					
+					<!-- VAT信息 -->
+					<tr>
+						<td></td>
+						<td></td>
+						<td>vatnumber</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>VAT/税号</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>eorinumber</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>EORI/企业号</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>vatcorpname</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>VAT公司名称</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>vataddress</td>
+						<td>String</td>
+						<td>200</td>
+						<td></td>
+						<td>VAT公司地址</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>residential</td>
+						<td>String</td>
+						<td>1</td>
+						<td></td>
+						<td>是否住宅地址（0：否，1：是）</td>
+					</tr>
+					
+					<!-- 材积信息 -->
+					<tr>
+						<td></td>
+						<td colspan='2'>volumes</td>
+						<td>JSONArray</td>
+						<td></td>
+						<td></td>
+						<td>材积信息<span style='color:red;'>（传入该节点以下字段都必须传入）</span></td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>customerchildnumber</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>客户子单号</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>prenum</td>
+						<td>Integer</td>
+						<td></td>
+						<td></td>
+						<td>件数</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>prelength</td>
+						<td>Double</td>
+						<td></td>
+						<td></td>
+						<td>长(CM)</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>prewidth</td>
+						<td>Double</td>
+						<td></td>
+						<td></td>
+						<td>宽(CM)</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>preheight</td>
+						<td>Double</td>
+						<td></td>
+						<td></td>
+						<td>高(CM)</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>prerweight</td>
+						<td>Double</td>
+						<td></td>
+						<td></td>
+						<td>单件重量(KG)</td>
+					</tr>
+					<!-- 物品信息 -->
+					<tr>
+						<td></td>
+						<td colspan='2'>items</td>
+						<td>JSONArray</td>
+						<td></td>
+						<td></td>
+						<td>物品信息</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>skucode</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>商品SKU</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>cnname</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>物品中文名</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>enname</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>物品英文名</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>weight</td>
+						<td>Double</td>
+						<td></td>
+						<td></td>
+						<td>净重(KG)</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>mweight</td>
+						<td>Double</td>
+						<td></td>
+						<td></td>
+						<td>毛重(KG)</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>quantity</td>
+						<td>Integer</td>
+						<td></td>
+						<td></td>
+						<td>数量</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>quantityunit</td>
+						<td>String</td>
+						<td>10</td>
+						<td></td>
+						<td>数量单位</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>price</td>
+						<td>Double</td>
+						<td></td>
+						<td></td>
+						<td>申报单价</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>declarecurrency</td>
+						<td>String</td>
+						<td>10</td>
+						<td></td>
+						<td>申报币别</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>hscode</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>海关编码</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>destinationhscode</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>目的地海关编码</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>norms</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>规格</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>enusage</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>用途(英文)</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>enmaterial</td>
+						<td>String</td>
+						<td>100</td>
+						<td></td>
+						<td>材质(英文)</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>salesllink</td>
+						<td>String</td>
+						<td>200</td>
+						<td></td>
+						<td>销售链接</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>origin</td>
+						<td>String</td>
+						<td>20</td>
+						<td></td>
+						<td>产地</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>brand</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>品牌</td>
+					</tr>
+					<tr>
+						<td></td><td></td>
+						<td>model</td>
+						<td>String</td>
+						<td>50</td>
+						<td></td>
+						<td>型号</td>
+					</tr>
+				</tbody>
+			</table>
+		
+			<h3>请求报文示例</h3>
+			<pre class="layui-code layui-box layui-code-view" lay-title="请求报文" style="padding: 5px;">{
+			    "authorization": {
+			        "code": "KJHB",
+			        "token": "c60bf762-01f7-470e-8c8f-acde06c81fed"
+			    },
+			    "datas": [
+			        {
+			            "order": {
+			                "channelid": "HK_TNT",
+			                "customernumber1": "T620200611-1001",
+			                "customernumber2": "",
+			                "number": "1",
+			                "isbattery": "0",
+			                "isinsurance": "0",
+			                "forecastweight": "1.54",
+			                "packagetypecode": "O",
+			                "goodstypecode": "WPX",
+			                "countrycode": "RU",
+			                "consigneename": "Nwabisa Mkaka",
+			                "consigneecorpname": "Nwabisa Mkaka",
+			                "consigneeaddress1": "nah Iskan 2 Khamis",
+			                "consigneeaddress2": "Mushait 62444-8888",
+			                "consigneeaddress3": "",
+			                "consigneecity": "Khamis Mushait",
+			                "consigneezipcode": "13958",
+			                "consigneeprovince": "Asir",
+			                "consigneetel": "546102083",
+			                "consigneemobile": "546102083",
+			                "consigneehousenumber": "A306",
+			                "consigneetaxnumber": "A068-02",
+			                "consigneeemail": "admin@Nwabisa.com"
+			            },
+			            "volumes": [
+			                {
+			                    "customerchildnumber": "CH-85120-1001",
+			                    "prenum": "5",
+			                    "prewidth": "50",
+			                    "prelength": "50",
+			                    "preheight": "50",
+			                    "prerweight": "15.55"
+			                }
+			            ],
+			            "items": [
+			                {
+			                    "skucode": "PK-08-001",
+			                    "cnname": "手机壳",
+			                    "enname": "iphone case",
+			                    "hscode": "PK896732",
+			                    "quantity": "10",
+			                    "quantityunit": "PCS",
+			                    "price": "5.87",
+			                    "declarecurrency": "USD",
+			                    "weight": "1.15",
+			                    "origin": "CN",
+			                    "model": "P40",
+			                    "note": "华为 P40 手机壳",
+			                    "material": "http://xxx.xxx.xxx",
+			                    "brand": "华为",
+			                    "usage": ""
+			                }
+			            ]
+			        }
+			    ]
+			}</pre>
+		</div>
+		
+	</div><!--  -->
+	
+	<div class="layui-card">
+		<div class="layui-card-header layui-unselect">
+			响应数据
+			<i class="layui-icon layui-icon-down"></i>
+		</div>
+		<div class="layui-card-body">
+			<h3>响应字段说明</h3>
+			<table class="layui-table" lay-size="sm">
+				<thead>
+					<tr>
+						<th colspan='2'>字段名称</th>
+						<th>字段说明</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td colspan='2'>code</td>
+						<td>接口请求是否通过 0：表示接口请求通过，其他表示失败</td>
+					</tr>
+					<tr>
+						<td colspan='2'>msg</td>
+						<td>说明信息</td>
+					</tr>
+					<tr>
+						<td colspan='2'>data</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>code</td>
+						<td>成功 0：表示成功，-1：表示失败</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>msg</td>
+						<td>说明信息</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>amount</td>
+						<td>总费用</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>details</td>
+						<td>费用明细</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td style='padding-left:30px;'>amount</td>
+						<td>费用</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td style='padding-left:30px;'>code</td>
+						<td>币别代码</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td style='padding-left:30px;'>name</td>
+						<td>币别名称</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td style='padding-left:30px;'>type</td>
+						<td>费用名称</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<h3>响应数据示例</h3>
+			<pre class="layui-code layui-box layui-code-view" lay-title="响应报文" lay-height="750px">{
+    "code": 0,
+    "msg": "调用成功",
+    "data": [
+        {
+            "code": 0,
+            "msg": "成功",
+            "amount": 317.75,
+            "details": [
+                {
+                    "amount": 215.92,
+                    "code": "RMB",
+                    "name": "人民币",
+                    "type": "运费"
+                },
+                {
+                    "amount": 15.0,
+                    "code": "USD",
+                    "name": "美元",
+                    "type": "产品费"
+                }
+            ]
+        }
+    ]
+}</pre>
+		</div>
+	</div>
+</div>	  	</div>
+  	</div>
+</div>
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script src="/resources/layui-v2.5.6/layui/layui.js?v="></script>
+<script src="/resources/js/jquery.min.js"></script>
+<script src="/resources/js/base64.js"></script>
+<script src="/resources/js/jquery.qrcode.min.js"></script> 
+<script src="/resources/js/math.min.js"></script>
+<script src="/resources/layuiAdmin/modules/decimal.js"></script>
+<script>
+	layui.config({
+		version: '',
+		base : '/resources/layuiAdmin/' //静态资源所在路径
+	}).extend({
+		index : 'lib/index' //主入口模块
+	});
+</script><script>
+layui.use(['index', 'common', 'code'], function(){
+   	var $ = layui.$;
+
+   	layui.code({elem: 'pre', about: false});
+	$("[data-api='searchChannelPrice']").addClass("layui-show");
+   	
+   	$("[data-api]").click(function(){
+   		var api = $(this).attr("data-api");
+   		location.href = '/api/doc?api='+api;
+   	})
+   	
+   	$(".layui-card-header").click(function(){
+   		$(this).siblings(".layui-card-body").addClass("layui-anim layui-anim-upbit").toggle();
+   		$(this).find(".layui-icon").toggleClass("layui-icon-up layui-icon-down");
+   	})
+   	
+});
+</script>
+</body>
+</html>

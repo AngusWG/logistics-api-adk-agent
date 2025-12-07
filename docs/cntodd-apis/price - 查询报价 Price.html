@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>跨境伙伴 T6软件 API 接口文档</title>
+	<link rel="stylesheet" href="/resources/css/doc.css" media="all">
+	<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<!-- 屏蔽自动识别电话、邮箱、网站地址 -->
+<meta name="format-detection" content="telephone=no,email=no,address=no"> 
+<link rel="stylesheet" href="/resources/layui-v2.5.6/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="/resources/layuiAdmin/style/admin.css" media="all">
+<!-- 重写样式 -->
+<link rel="stylesheet" href="/resources/css/customize.css" media="all">	<style>
+
+	h3{
+		font-weight: bold;
+	}
+	
+	td [data-api]{
+		color: blue;
+		cursor: pointer;
+	}
+	
+	.layui-card-header{
+		padding-left: 10px;
+		background-color: #fff;
+		color: #009688;
+		cursor: pointer;
+	}
+	.layui-card-body{
+		padding: 0 5px;
+	}
+	.apilist{
+		display: block;
+		position: relative; 
+		text-align: center;
+		font-size: 18px;
+		line-height: 28px;
+		padding: 7px 0;
+		color: #009688;
+		background-color: #fff;
+		-moz-box-shadow: 3px 0 5px #ccc; /* 老的 Firefox */
+		box-shadow: 3px 0 5px #ccc;
+		z-index: 999;
+		margin-bottom: 5px;
+	}
+	.apiname{
+		display: block;
+		position: relative; 
+		text-align: center;
+		font-size: 18px;
+		line-height: 28px;
+		padding: 10px 0;
+		color: #009688;
+		background-color: #fff;
+		-moz-box-shadow: 3px 0 5px #ccc; /* 老的 Firefox */
+		box-shadow: 3px 0 5px #ccc;
+		z-index: 999;
+		margin-bottom: 5px;
+	}
+	
+	.apiname:before, .apiname:after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		background: #ccc; 
+		width: 30%;
+		height: 1px;
+	}
+	.apiname:before{
+		left: 2%;
+	}
+	.apiname:after{
+		right: 2%;
+	}
+	#api_list li{
+		line-height: 32px;
+		height: 32px;
+		border-left: 5px solid #009688;
+		padding: 3px 5px;
+		margin-bottom: 10px;
+		background-color: #f0f0f0;
+		cursor: pointer;
+	}
+	#api_list li:hover{
+		font-weight: bold;
+	}
+	.layui-show{
+		font-weight: bold;
+		color: #009688;
+	}
+	html{
+		background-color: #f0f0f0;
+	}
+</style>
+</head>
+<body>
+	
+   	
+	<div class="layui-main">
+		<div class="layui-row layui-col-space10">
+  		<div class="layui-col-sm3" style=''>
+		  	<div class="apilist">API 接口文档</div>
+		  	<div style="background-color:#fff; margin-top: 5px; padding: 5px;">
+			  	<ul id="api_list" class="layui-unselect" outheight="65">
+			    		<li data-api="createOrder" >批量下单 Create Order</li>
+			    		<li data-api="createFbaOrder" >Fba批量下单 Create Fba Order</li>
+			    		<li data-api="label" >获取标签 Label</li>
+			    		<li data-api="Express" >获取面单 Express</li>
+			    		<li data-api="delete" >删除运单 delete</li>
+			    		<li data-api="waybillnumber" >获取单号 Waybillnumber</li>
+			    		<li data-api="pageOrders" >分页查询运单 pageOrders</li>
+			    		<li data-api="orderAnnexs" >获取运单附件 orderAnnexs</li>
+			    		<li data-api="orderRecSheets" >获取运单费用 orderRecSheets</li>
+			    		<li data-api="searchChannelPrice" >运费试算 searchChannelPrice</li>
+			    		<li data-api="orderAmt" >获取运单预扣金额 orderAmt</li>
+			    		<li data-api="orderVolume" >获取运单收货材积信息 orderVolume</li>
+			    		<li data-api="orderPickup" >获取运单提货信息 orderPickup</li>
+			    		<li data-api="equipReceipt" >设备收货  equipReceipt</li>
+			    		<li data-api="uploadBoxPicture" >上传收货图片  uploadBoxPicture</li>
+			    		<li data-api="channel" >查询渠道 Channel</li>
+			    		<li data-api="insurance" >查询投保类型  Insurance</li>
+			    		<li data-api="productType" >查询物品类别  Product Type</li>
+			    		<li data-api="declareType" >查询报关类型  Declare Type</li>
+			    		<li data-api="customsType" >查询清关方式  Customs Type</li>
+			    		<li data-api="destination" >查询目的地  Destination</li>
+			    		<li data-api="currency" >查询币别  Currency</li>
+			    		<li data-api="termsofsalecode" >查询销售条款  Terms of sale</li>
+			    		<li data-api="exportreasoncode" >查询出口原因  Export reason</li>
+			    		<li data-api="track" >查询轨迹  Track</li>
+			    		<li data-api="price" >查询报价  Price</li>
+			    		<li data-api="dataPush" >数据推送 Data Push</li>
+			    		<li data-api="receivePlatformData" >接收平台信息 Receive PlatformData</li>
+			  	</ul>
+			  </div>
+		</div>
+
+  		<div class="layui-col-sm9" style="padding-top: 0px;">
+  				<div class="apiname">查询报价  Price</div>
+<div outHeight="53">
+	<div class="layui-card">
+		<div class="layui-card-header layui-unselect">
+			接口说明
+			<i class="layui-icon layui-icon-down"></i>
+		</div>
+		<div class="layui-card-body">
+			<div>通过此接口可查询指定客户的订单价格信息。</div>
+			<br>
+			<div>
+				接口地址： <b>http://www.cntodd.top//api/searchPrice</b>
+			</div>
+			<div>
+				请求方式： <b>POST</b>
+			</div>
+		</div>
+	</div>
+	
+	<div class="layui-card">
+		<div class="layui-card-header layui-unselect">
+			请求参数
+			<i class="layui-icon layui-icon-down"></i>
+		</div>
+		<div class="layui-card-body">
+			<h3>请求字段说明</h3>
+			<table class="layui-table" lay-size="sm">
+				<thead>
+					<tr>
+						<th colspan='3'>字段名称</th>
+						<th>字段类型</th>
+						<th>字段长度</th>
+						<th>是否必需</th>
+						<th>字段说明</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>authorization</td>
+						<td></td>
+						<td></td>
+						<td>JSONObject</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>code</td>
+						<td></td>
+						<td>String</td>
+						<td>5-20</td>
+						<td>Y</td>
+						<td>客户编码</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>token</td>
+						<td></td>
+						<td>String</td>
+						<td>50</td>
+						<td>Y</td>
+						<td>API授权码</td>
+					</tr>
+					<tr>
+						<td>datas</td>
+						<td></td>
+						<td></td>
+						<td>JSONObject</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>dest</td>
+						<td></td>
+						<td>String</td>
+						<td></td>
+						<td>Y</td>
+						<td>目的地编码，通过调用<span data-api='destination'> [查询目的地]</span> 接口获取</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>desttype</td>
+						<td></td>
+						<td>String</td>
+						<td></td>
+						<td>Y</td>
+						<td>目的地类型， [ country：国家，port：港口，airport：机场 ]</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>volumetype</td>
+						<td></td>
+						<td>String</td>
+						<td></td>
+						<td>N</td>
+						<td>材积格式， [ lwh：单件材积，lwhs：多件材积 ]</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>volumes</td>
+						<td></td>
+						<td>JSONArray</td>
+						<td></td>
+						<td>N</td>
+						<td>材积信息， 数组</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>length</td>
+						<td>number</td>
+						<td></td>
+						<td>N</td>
+						<td>单件长</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>width</td>
+						<td>number</td>
+						<td></td>
+						<td>N</td>
+						<td>单件宽</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>height</td>
+						<td>number</td>
+						<td></td>
+						<td>N</td>
+						<td>单件高</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>weight</td>
+						<td>number</td>
+						<td></td>
+						<td>N</td>
+						<td>单件重</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>piece</td>
+						<td>number</td>
+						<td></td>
+						<td>N</td>
+						<td>件数，单件材积时件数设为1</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>weight</td>
+						<td></td>
+						<td>number</td>
+						<td></td>
+						<td>Y</td>
+						<td>总重量</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>piece</td>
+						<td></td>
+						<td>number</td>
+						<td></td>
+						<td>Y</td>
+						<td>总件数</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>goodstype</td>
+						<td></td>
+						<td>String</td>
+						<td></td>
+						<td>Y</td>
+						<td>货物类型  [ WPX：包裹，DOC：文件，PAK：PAK袋 ]</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>channelid</td>
+						<td></td>
+						<td>String</td>
+						<td></td>
+						<td>N</td>
+						<td>渠道代码；通过调用<span data-api='channel'> [查询渠道]</span> 接口获取</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>producttypepkid</td>
+						<td></td>
+						<td>String</td>
+						<td></td>
+						<td>N</td>
+						<td>物品类别，多个使用逗号(,)分隔；通过调用<span data-api='productType'> [获取物品类别]</span> 接口获取</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>city</td>
+						<td></td>
+						<td>String</td>
+						<td></td>
+						<td>N</td>
+						<td>城市</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>zipcode</td>
+						<td></td>
+						<td>String</td>
+						<td></td>
+						<td>N</td>
+						<td>邮编</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>fbacode</td>
+						<td></td>
+						<td>String</td>
+						<td></td>
+						<td>N</td>
+						<td>FBA仓码</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>validate</td>
+						<td></td>
+						<td>String</td>
+						<td></td>
+						<td>N</td>
+						<td>查价时间，默认当前时间，时间格式：yyyy-MM-dd HH:mm:ss</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<h3>请求报文示例</h3>
+			<pre class="layui-code layui-box layui-code-view" lay-title="请求报文">{
+    "authorization": {
+        "code": "KJHB",
+        "token": "c60bf762-01f7-470e-8c8f-acde06c81fed"
+    },
+    "datas": {
+        "dest": "US",
+        "desttype": "country",
+        "goodstype": "WPX",
+        "producttype": "1,6",
+        "validate": "2021-05-19 14:29:37",
+        "volumetype": "lwhs",
+        "volumes": [
+            {
+                "height": "10",
+                "length": "10",
+                "piece": "1",
+                "weight": "10",
+                "width": "10"
+            },
+            {
+                "height": "20",
+                "length": "20",
+                "piece": "3",
+                "weight": "20",
+                "width": "20"
+            }
+        ],
+        "weight": "70.000",
+        "piece": "4",
+        "city": "test",
+        "zipcode": "123"
+    }
+}</pre>
+		</div>
+	</div>
+	
+	<div class="layui-card">
+		<div class="layui-card-header layui-unselect">
+			响应数据
+			<i class="layui-icon layui-icon-down"></i>
+		</div>
+		<div class="layui-card-body">
+			<h3>响应字段说明</h3>
+			<table class="layui-table" lay-size="sm">
+				<thead>
+					<tr>
+						<th>字段名称</th>
+						<td></td>
+						<td></td>
+						<th>字段说明</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>code</td>
+						<td></td>
+						<td></td>
+						<td>接口请求是否通过 0：表示接口请求通过，其他表示失败</td>
+					</tr>
+					<tr>
+						<td>msg</td>
+						<td></td>
+						<td></td>
+						<td>说明信息</td>
+					</tr>
+					<tr>
+						<td>data</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>channel</td>
+						<td></td>
+						<td>渠道信息</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>channelid</td>
+						<td>渠道编码</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>channelname</td>
+						<td>渠道名称</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>channelnameen</td>
+						<td>渠道英文名</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>channelnamecn</td>
+						<td>渠道中文名</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>label</td>
+						<td>渠道标签</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>volume</td>
+						<td>渠道材积除</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>aging</td>
+						<td>渠道时效</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>note</td>
+						<td>渠道备注</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>...</td>
+						<td>其他一些信息字段</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>channel_productypes</td>
+						<td></td>
+						<td>渠道支持的物品类别，json数组。若为空表示不限制任何物品类别</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>code</td>
+						<td>物品类别；可通过调用<span data-api="productType">[获取物品类别]</span>接口查看详细信息</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>channelid</td>
+						<td>渠道代码；可通过调用<span data-api="channel">[查询渠道]</span>接口查看详细信息</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>channeltypename</td>
+						<td></td>
+						<td>承运商</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>shiptype</td>
+						<td></td>
+						<td>渠道运输类型</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>destName</td>
+						<td></td>
+						<td>目的地</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>dest_area_name</td>
+						<td></td>
+						<td>目的地分区名称</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>goodstype</td>
+						<td></td>
+						<td>货物类型</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>price</td>
+						<td></td>
+						<td>报价信息</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>pricepk</td>
+						<td>报价ID</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>pricename</td>
+						<td>报价名称</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>validbegin</td>
+						<td>报价起始时间</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>validend</td>
+						<td>报价截止时间</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>calcflag</td>
+						<td>计价类型， 1： 按票计算，2：按件计算</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>note</td>
+						<td>报价备注</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>...</td>
+						<td>其他一些信息字段</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>priceUpdatetime</td>
+						<td></td>
+						<td>报价最近更新时间</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>totalCost</td>
+						<td></td>
+						<td>总金额</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>totalCostCcy</td>
+						<td></td>
+						<td>总金额币别</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>totalCostFormula</td>
+						<td></td>
+						<td>总金额计算公式</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>weight</td>
+						<td></td>
+						<td>计费重</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>weightInfos</td>
+						<td></td>
+						<td>重量计算信息</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>totalWeight</td>
+						<td>总实重</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>totalFinalWeight</td>
+						<td>总结算重</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>weight</td>
+						<td>计费重</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>weightFormula</td>
+						<td>计费重计算公式</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>totalPiece</td>
+						<td>总件数</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>totalVolume</td>
+						<td>总材积</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>m3</td>
+						<td>方数</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>tranCost</td>
+						<td></td>
+						<td>运费</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>tranCostUnitprice</td>
+						<td></td>
+						<td>单价，运费除以计费重</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>tranCostCcy</td>
+						<td></td>
+						<td>运费币别</td>
+					</tr><tr>
+						<td></td>
+						<td>trancostCalcDetail</td>
+						<td></td>
+						<td>数组，运费计算细节，按件计算的每个单件运费，按票的为总体运费</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>calcFormula</td>
+						<td>计算公式</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>tranCost</td>
+						<td>计算运费</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>calcWeight</td>
+						<td>计价重量</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>calcNum</td>
+						<td>计价数量</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>unitprice</td>
+						<td>单价， 运费除以数量</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>priceWeightInfos</td>
+						<td>报价重量段， 计价重量匹配的重量段报价数据信息， 详见<a href="#priceWeightInfos" class="layui-jump">priceWeightInfos节点</a></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>fuelCost</td>
+						<td></td>
+						<td>燃油费, 费用币别同运费币别</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>fuelCostRate</td>
+						<td></td>
+						<td>燃油费率</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>costList</td>
+						<td></td>
+						<td>其他费用，json数组</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>costtype</td>
+						<td>费用类型</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>amount</td>
+						<td>费用金额</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>ccy</td>
+						<td>币别</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>formula</td>
+						<td>计算公式</td>
+					</tr>
+					
+					<tr id="priceWeightInfos">
+						<th colspan="4">priceWeightInfos节点， json数组</th>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>weightname</td>
+						<td>重量段名称</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>type</td>
+						<td>重量段类型。1：单价; 2：金额； 3：首重价格； 4：续重价格；5：续首重价格</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>priceWeightType</td>
+						<td>报价计算方式</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>goodstype</td>
+						<td>重量段包裹类型</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>lowweight</td>
+						<td>最低重量， 单位KG</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>highweight</td>
+						<td>最高重量， 单位KG</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>unit</td>
+						<td>单位重量， 单位KG</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>calcpricedata</td>
+						<td>报价计算金额</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>calcformula</td>
+						<td>报价计算公式</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<h3>响应数据示例</h3>
+<pre class="layui-code layui-box layui-code-view" lay-title="响应报文">{
+    "msg": "success",
+    "code": 0,
+    "data": [
+        {
+            "dest_area_name": "1区",
+            "destName": "美国",
+            "costList": [],
+            "channeltypecode": "Ocean Shipp",
+            "channel": {
+                "volume": "1000000",
+                "channelname": "YR美国海运收货",
+                "channelid": "yrhy"
+            },
+            "weightInfos": {
+                "totalVolume": "0.025",
+                "totalFinalWeight": "70",
+                "totalPiece": "4",
+                "m3": "0.025000",
+                "totalWeight": "70",
+                "weightFormula": "如果 结算重 < 21\n那么 返回 向上进位(结算重,0.5)\n否则 返回 向上进位(结算重,1)"
+            },
+            "weight": "70",
+            "shiptype": "专线",
+            "fuelCostRate": "含燃油",
+            "channel_productypes": [
+                {
+                    "code": 1,
+                    "channelid": "yrhy"
+                }
+            ],
+            "unitprice": null,
+            "priceAging": "",
+            "channeltypename": "海运",
+            "trancostCalcDetail": [
+                {
+                    "calcFormula": "70*11.5",
+                    "realTransUnitprice": 11.5,
+                    "tranCost": 805.0,
+                    "priceWeightInfos": [
+                        {
+                            "calcpriceweight": 70.0,
+                            "unit": 1.0,
+                            "highweight": 99.0,
+                            "lowweight": 0.0,
+                            "serialid": 1,
+                            "calcformula": "70*11.5",
+                            "priceWeightType": "单价",
+                            "pricepk": 162,
+                            "type": 1,
+                            "weightname": "21-99",
+                            "goodstype": "WPX",
+                            "calcpricedata": "11.5"
+                        }
+                    ],
+                    "unitprice": 11.5,
+                    "calcNum": 1,
+                    "calcWeight": 70.0
+                }
+            ],
+            "priceUpdatetime": "2022-02-21 14:42:40",
+            "price": {
+                "note": "",
+                "pricename": "YR美国海运收货_20210323164359",
+                "ccycode": "RMB",
+                "pricepk": 162,
+                "calcflag": "1"
+            },
+            "totalCostFormula": null,
+            "totalCostCcy": "RMB",
+            "tranCost": 805.0,
+            "tranCostCcy": "RMB",
+            "goodstype": "包裹",
+            "totalCost": 805.0,
+            "fuelCost": null
+        }
+    ]
+}</pre>
+			
+		</div>
+	</div>
+	
+</div>
+	  	</div>
+  	</div>
+</div>
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script src="/resources/layui-v2.5.6/layui/layui.js?v="></script>
+<script src="/resources/js/jquery.min.js"></script>
+<script src="/resources/js/base64.js"></script>
+<script src="/resources/js/jquery.qrcode.min.js"></script> 
+<script src="/resources/js/math.min.js"></script>
+<script src="/resources/layuiAdmin/modules/decimal.js"></script>
+<script>
+	layui.config({
+		version: '',
+		base : '/resources/layuiAdmin/' //静态资源所在路径
+	}).extend({
+		index : 'lib/index' //主入口模块
+	});
+</script><script>
+layui.use(['index', 'common', 'code'], function(){
+   	var $ = layui.$;
+
+   	layui.code({elem: 'pre', about: false});
+	$("[data-api='price']").addClass("layui-show");
+   	
+   	$("[data-api]").click(function(){
+   		var api = $(this).attr("data-api");
+   		location.href = '/api/doc?api='+api;
+   	})
+   	
+   	$(".layui-card-header").click(function(){
+   		$(this).siblings(".layui-card-body").addClass("layui-anim layui-anim-upbit").toggle();
+   		$(this).find(".layui-icon").toggleClass("layui-icon-up layui-icon-down");
+   	})
+   	
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>跨境伙伴 T6软件 API 接口文档</title>
+	<link rel="stylesheet" href="/resources/css/doc.css" media="all">
+	<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<!-- 屏蔽自动识别电话、邮箱、网站地址 -->
+<meta name="format-detection" content="telephone=no,email=no,address=no"> 
+<link rel="stylesheet" href="/resources/layui-v2.5.6/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="/resources/layuiAdmin/style/admin.css" media="all">
+<!-- 重写样式 -->
+<link rel="stylesheet" href="/resources/css/customize.css" media="all">	<style>
+
+	h3{
+		font-weight: bold;
+	}
+	
+	td [data-api]{
+		color: blue;
+		cursor: pointer;
+	}
+	
+	.layui-card-header{
+		padding-left: 10px;
+		background-color: #fff;
+		color: #009688;
+		cursor: pointer;
+	}
+	.layui-card-body{
+		padding: 0 5px;
+	}
+	.apilist{
+		display: block;
+		position: relative; 
+		text-align: center;
+		font-size: 18px;
+		line-height: 28px;
+		padding: 7px 0;
+		color: #009688;
+		background-color: #fff;
+		-moz-box-shadow: 3px 0 5px #ccc; /* 老的 Firefox */
+		box-shadow: 3px 0 5px #ccc;
+		z-index: 999;
+		margin-bottom: 5px;
+	}
+	.apiname{
+		display: block;
+		position: relative; 
+		text-align: center;
+		font-size: 18px;
+		line-height: 28px;
+		padding: 10px 0;
+		color: #009688;
+		background-color: #fff;
+		-moz-box-shadow: 3px 0 5px #ccc; /* 老的 Firefox */
+		box-shadow: 3px 0 5px #ccc;
+		z-index: 999;
+		margin-bottom: 5px;
+	}
+	
+	.apiname:before, .apiname:after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		background: #ccc; 
+		width: 30%;
+		height: 1px;
+	}
+	.apiname:before{
+		left: 2%;
+	}
+	.apiname:after{
+		right: 2%;
+	}
+	#api_list li{
+		line-height: 32px;
+		height: 32px;
+		border-left: 5px solid #009688;
+		padding: 3px 5px;
+		margin-bottom: 10px;
+		background-color: #f0f0f0;
+		cursor: pointer;
+	}
+	#api_list li:hover{
+		font-weight: bold;
+	}
+	.layui-show{
+		font-weight: bold;
+		color: #009688;
+	}
+	html{
+		background-color: #f0f0f0;
+	}
+</style>
+</head>
+<body>
+	
+   	
+	<div class="layui-main">
+		<div class="layui-row layui-col-space10">
+  		<div class="layui-col-sm3" style=''>
+		  	<div class="apilist">API 接口文档</div>
+		  	<div style="background-color:#fff; margin-top: 5px; padding: 5px;">
+			  	<ul id="api_list" class="layui-unselect" outheight="65">
+			    		<li data-api="createOrder" >批量下单 Create Order</li>
+			    		<li data-api="createFbaOrder" >Fba批量下单 Create Fba Order</li>
+			    		<li data-api="label" >获取标签 Label</li>
+			    		<li data-api="Express" >获取面单 Express</li>
+			    		<li data-api="delete" >删除运单 delete</li>
+			    		<li data-api="waybillnumber" >获取单号 Waybillnumber</li>
+			    		<li data-api="pageOrders" >分页查询运单 pageOrders</li>
+			    		<li data-api="orderAnnexs" >获取运单附件 orderAnnexs</li>
+			    		<li data-api="orderRecSheets" >获取运单费用 orderRecSheets</li>
+			    		<li data-api="searchChannelPrice" >运费试算 searchChannelPrice</li>
+			    		<li data-api="orderAmt" >获取运单预扣金额 orderAmt</li>
+			    		<li data-api="orderVolume" >获取运单收货材积信息 orderVolume</li>
+			    		<li data-api="orderPickup" >获取运单提货信息 orderPickup</li>
+			    		<li data-api="equipReceipt" >设备收货  equipReceipt</li>
+			    		<li data-api="uploadBoxPicture" >上传收货图片  uploadBoxPicture</li>
+			    		<li data-api="channel" >查询渠道 Channel</li>
+			    		<li data-api="insurance" >查询投保类型  Insurance</li>
+			    		<li data-api="productType" >查询物品类别  Product Type</li>
+			    		<li data-api="declareType" >查询报关类型  Declare Type</li>
+			    		<li data-api="customsType" >查询清关方式  Customs Type</li>
+			    		<li data-api="destination" >查询目的地  Destination</li>
+			    		<li data-api="currency" >查询币别  Currency</li>
+			    		<li data-api="termsofsalecode" >查询销售条款  Terms of sale</li>
+			    		<li data-api="exportreasoncode" >查询出口原因  Export reason</li>
+			    		<li data-api="track" >查询轨迹  Track</li>
+			    		<li data-api="price" >查询报价  Price</li>
+			    		<li data-api="dataPush" >数据推送 Data Push</li>
+			    		<li data-api="receivePlatformData" >接收平台信息 Receive PlatformData</li>
+			  	</ul>
+			  </div>
+		</div>
+
+  		<div class="layui-col-sm9" style="padding-top: 0px;">
+  				<div class="apiname">分页查询运单 pageOrders</div>
+<div outHeight="53">
+	<div class="layui-card">
+		<div class="layui-card-header layui-unselect">
+			接口说明
+			<i class="layui-icon layui-icon-down"></i>
+		</div>
+		<div class="layui-card-body">
+			<div>通过此接口可获取运单信息</div>
+			<div style="color:red;">重要提示：系统需包含上下游板块，否则无法正常使用该接口。</div>
+			<br>
+			<div>
+				接口地址： <b>http://www.cntodd.top//api/order/pageOrders</b>
+			</div>
+			<div>
+				请求方式： <b>POST</b>
+			</div>
+		</div>
+	</div>
+	
+	<div class="layui-card">
+		<div class="layui-card-header layui-unselect">
+			请求参数
+			<i class="layui-icon layui-icon-down"></i>
+		</div>
+		<div class="layui-card-body">
+			<h3>请求字段说明</h3>
+			<table class="layui-table" lay-size="sm">
+				<thead>
+					<tr>
+						<th colspan='3'>字段名称</th>
+						<th>字段类型</th>
+						<th>是否必需</th>
+						<th>字段说明</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td colspan='3'>authorization</td>
+						<td>JSONObject</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td colspan='2' style='width:10px;'></td>
+						<td>code</td>
+						<td>String</td>
+						<td>Y</td>
+						<td>客户编码</td>
+					</tr>
+					<tr>
+						<td colspan='2'></td>
+						<td>token</td>
+						<td>String</td>
+						<td>Y</td>
+						<td>API授权码</td>
+					</tr>
+					<tr>
+						<td colspan='3'>page</td>
+						<td>JSONObject</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan='2'>page</td>
+						<td>Integer</td>
+						<td>Y</td>
+						<td>第几页</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan='2'>limit</td>
+						<td>Integer</td>
+						<td>Y</td>
+						<td>每页多少条</td>
+					</tr>
+					<tr>
+						<td colspan='3'>datas</td>
+						<td>JSONObject</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan='2'>datatype</td>
+						<td>String</td>
+						<td>Y</td>
+						<td>日期类型（1：制单时间，2：最后修改时间）</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan='2'>begcreatedate</td>
+						<td>String</td>
+						<td>Y</td>
+						<td>制单日期起</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan='2'>endcreatedate</td>
+						<td>String</td>
+						<td>Y</td>
+						<td>制单日期止</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<h3>请求报文示例</h3>
+			<pre class="layui-code layui-box layui-code-view" lay-title="请求报文">{
+			    "authorization": {
+			        "code": "David",
+			        "token": "88361995-1574-4fa2-995a-6ad0c35e5770"
+			    },
+			    "page": {
+			        "page": 1,
+			        "limit": 10
+			    },
+			    "datas": {
+			        "datatype": "1",
+			        "begcreatedate": "2022-01-01 00:00:00",
+			        "endcreatedate": "2022-05-07 10:17:15"
+			    }
+			}</pre>
+		</div>
+	</div>
+	
+	<div class="layui-card">
+		<div class="layui-card-header layui-unselect">
+			响应数据
+			<i class="layui-icon layui-icon-down"></i>
+		</div>
+		<div class="layui-card-body">
+			<h3>响应字段说明</h3>
+			<table class="layui-table" lay-size="sm">
+				<thead>
+					<tr>
+						<th colspan='2'>字段名称</th>
+						<th>字段类型</th>
+						<th>字段说明</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td colspan='2'>code</td>
+						<td>Integer</td>
+						<td>接口请求是否通过 0：表示接口请求通过，其他表示失败</td>
+					</tr>
+					<tr><td colspan='2'>count</td><td>Integer</td><td>总条数</td></tr>
+					<tr><td colspan='2'>data</td><td>JSONArray</td><td></td></tr>
+					<tr><td></td><td>pkid</td><td>运单id</td></tr>
+					<tr><td></td><td>systemnumber</td><td>String</td><td>系统单号</td></tr>
+					<tr><td></td><td>customernumber1</td><td>String</td><td>客户参考号1</td></tr>
+					<tr><td></td><td>customernumber2</td><td>String</td><td>客户参考号2</td></tr>
+					<tr><td></td><td>waybillnumber</td><td>String</td><td>运单号</td></tr>
+					<tr><td></td><td>tracknumber</td><td>String</td><td>转单号</td></tr>
+					<tr><td></td><td>fbanumber</td><td>String</td><td>FBAID</td></tr>
+					<tr><td></td><td>poanumber</td><td>String</td><td>poanumber</td></tr>
+					<tr><td></td><td>channelid</td><td>String</td><td>收货渠道编码</td></tr>
+					<tr><td></td><td>channelname</td><td>String</td><td>收货渠道名称</td></tr>
+					<tr><td></td><td>countrycode</td><td>String</td><td>目的地编码</td></tr>
+					<tr><td></td><td>countryname</td><td>String</td><td>目的地名称</td></tr>
+					<tr><td></td><td>number</td><td>Integer</td><td>总件数</td></tr>
+					<tr><td></td><td>status</td><td>String</td><td>运单状态编码</td></tr>
+					<tr><td></td><td>statusname</td><td>String</td><td>运单状态名称</td></tr>
+					<tr><td></td><td>forecastmweight</td><td>decimal(14,3)</td><td>预报材重</td></tr>
+					<tr><td></td><td>forecastweight</td><td>decimal(14,3)</td><td>预报实重</td></tr>
+					<tr><td></td><td>inmweight</td><td>decimal(14,3)</td><td>收货材重</td></tr>
+					<tr><td></td><td>inrweight</td><td>decimal(14,3)</td><td>收货实重</td></tr>
+					<tr><td></td><td>inweight</td><td>decimal(14,3)</td><td>收货结算重</td></tr> 
+					<tr><td></td><td>square</td><td>decimal(14,6)</td><td>方数</td></tr> 
+					<tr><td></td><td>goodstypecode</td><td>String</td><td>货物类型编码</td></tr> 
+					<tr><td></td><td>goodstypename</td><td>String</td><td>货物类型名称</td></tr> 
+					<tr><td></td><td>producttypepkid</td><td>String</td><td>物品类别编码</td></tr> 
+					<tr><td></td><td>producttypepkname</td><td>String</td><td>物品类别名称</td></tr> 
+					<tr><td></td><td>totalname</td><td>String</td><td>品名合计</td></tr> 
+					<tr><td></td><td>totalvalue</td><td>String</td><td>申报价值合计</td></tr> 
+					<tr><td></td><td>declaretypepkid</td><td>String</td><td>报关类型合计编码</td></tr> 
+					<tr><td></td><td>declaretypepkname</td><td>String</td><td>报关类型合计名称</td></tr> 
+					<tr><td></td><td>isinsurance</td><td>Integer</td><td>是否投保</td></tr>
+					<tr><td></td><td>insurancetypepkid</td><td>String</td><td>投保类型</td></tr>
+					<tr><td></td><td>insurancevalue</td><td>decimal(14,3)</td><td>投保金额</td></tr>
+					<tr><td></td><td>insurancecurrency</td><td>String</td><td>投保币别编码</td></tr>
+					<tr><td></td><td>insurancecurrencyname</td><td>String</td><td>投保币别名称</td></tr>
+					<tr><td></td><td>isbattery</td><td>String</td><td>是否带电</td></tr>
+					<tr><td></td><td>ismagnet</td><td>String</td><td>是否带磁</td></tr>
+					<tr><td></td><td>isproblem</td><td>String</td><td>是否问题件</td></tr>
+					<tr><td></td><td>collectionpayment</td><td>decimal(14,2)</td><td>代收货款</td></tr>
+					<tr><td></td><td>collectionpaymentcurrency</td><td>String</td><td>代收货款币别编码</td></tr>
+					<tr><td></td><td>collectionpaymentcurrencyname</td><td>String</td><td>代收货款币别名称</td></tr>
+					<tr><td></td><td>deductiontype</td><td>Integer</td><td>扣货标志（0：正常，1：自动扣货，2：手动扣货）</td></tr>
+					<tr><td></td><td>deductionnote</td><td>String</td><td>扣货说明 </td></tr>
+					<tr><td></td><td>note</td><td>String</td><td>运单备注 </td></tr>
+					<tr><td></td><td>pickupstatus</td><td>Integer</td><td>提货状态编码</td></tr>
+					<tr><td></td><td>pickupstatusname</td><td>String</td><td>提货状态名称</td></tr>
+					<tr><td></td><td>createdate</td><td>String</td><td>制单日期</td></tr>
+					<tr><td></td><td>forecastdate</td><td>String</td><td>预报时间</td></tr>
+					<tr><td></td><td>receiptdate</td><td>String</td><td>收货时间</td></tr>
+					<tr><td></td><td>returndate</td><td>String</td><td>退货时间</td></tr>
+					<tr><td></td><td>internettime</td><td>String</td><td>上网时间</td></tr>
+					<tr><td></td><td>deliverdate</td><td>String</td><td>签收时间</td></tr>
+					<tr><td></td><td>editdate</td><td>String</td><td>最后修改日期</td></tr>
+					<tr><td></td><td>receiptbatchnumber</td><td>String</td><td>收货批次号</td></tr>
+					<tr><td></td><td>residential</td><td>String</td><td>是否住宅地址</td></tr>
+					<tr><td></td><td>fbawarehousecode</td><td>String</td><td>FBA仓码</td></tr>
+					<tr><td></td><td>consigneename</td><td>String</td><td>收件人名称</td></tr>
+					<tr><td></td><td>consigneecorpname</td><td>String</td><td>收件人公司</td></tr>
+					<tr><td></td><td>consigneeaddress1</td><td>String</td><td>收件人地址1</td></tr>
+					<tr><td></td><td>consigneeaddress2</td><td>String</td><td>收件人地址2</td></tr>
+					<tr><td></td><td>consigneeaddress3</td><td>String</td><td>收件人地址3</td></tr>
+					<tr><td></td><td>consigneecity</td><td>String</td><td>收件人城市</td></tr>
+					<tr><td></td><td>consigneezipcode</td><td>String</td><td>收件人邮编</td></tr>
+					<tr><td></td><td>consigneeprovince</td><td>String</td><td>收件人省州</td></tr>
+					<tr><td></td><td>consigneetel</td><td>String</td><td>收件人电话</td></tr>
+					<tr><td></td><td>consigneemobile</td><td>String</td><td>收件人手机</td></tr>
+					<tr><td></td><td>consigneehousenumber</td><td>String</td><td>收件人门牌号</td></tr>
+					<tr><td></td><td>consigneetaxnumber</td><td>String</td><td>收件人税号</td></tr>
+					<tr><td></td><td>consigneeemail</td><td>String</td><td>收件人城市</td></tr>
+					<tr><td></td><td>consigneecity</td><td>String</td><td>收件人邮箱</td></tr>
+					<tr><td></td><td>consigneeaddresstype</td><td>String</td><td>收件地址类型</td></tr>
+				</tbody>
+			</table>
+			
+			<h3>响应数据示例</h3>
+			<pre class="layui-code layui-box layui-code-view" lay-title="响应报文">{
+			    "code": 0,
+			    "data": [
+			        {
+			            "pkid": 47670,
+			            "consigneename": "Africa Knight",
+			            "consigneetel": "0409750527",
+			            "countrycode": "AU",
+			            "createdate": "2022-04-27 14:52:28",
+			            "goodstypename": "包裹",
+			            "insurancecurrency": "",
+			            "inrweight": 0.0,
+			            "number": 3,
+			            "pickupstatusname": "",
+			            "deductionnote": "",
+			            "producttypename": "",
+			            "pickupstatus": "否",
+			            "forecastweight": 6.072,
+			            "totalvalue": 5.0,
+			            "forecastmweight": 105.0,
+			            "systemnumber": "SYS220427000190",
+			            "countryname": "澳大利亚",
+			            "status": "Predicted",
+			            "statusname": "已预报",
+			            "consigneecity": "Meadowbrook",
+			            "square": 0.63,
+			            "insurancetypepkid": 0,
+			            "consigneeaddresstype": "",
+			            "consigneezipcode": "4131",
+			            "editdate": "2022-04-27 14:53:58",
+			            "consigneeprovince": "QLD",
+			            "tracknumber": "PICKUP0886131",
+			            "note": "",
+			            "declaretypename": "",
+			            "inweight": 0.0,
+			            "waybillnumber": "34LRU202025903000931501",
+			            "consigneecorpname": "",
+			            "inmweight": 0.0,
+			            "consigneetaxnumber": "",
+			            "isinsurance": 2,
+			            "consigneemobile": "",
+			            "deductiontype": "否",
+			            "isbattery": "否",
+			            "ismagnet": "否",
+			            "producttypepkid": "1",
+			            "insurancevalue": 0.0,
+			            "receiptbatchnumber": "",
+			            "consigneeemail": "africa_624@hotmail.co.uk",
+			            "customernumber2": "",
+			            "customernumber1": "SYS220427000190",
+			            "collectionpayment": 0.0,
+			            "consigneehousenumber": "",
+			            "totalname": "[表带*1]",
+			            "forecastdate": "2022-04-27 14:54:05",,
+			            "channelid": "DW001"
+			            "channelname": "大伟测试渠道（勿动）",
+			            "isproblem": "否",
+			            "goodstypecode": "WPX",
+			            "residential": "否",
+			            "consigneeaddress3": "",
+			            "consigneeaddress1": "ebay:gkczcdr",
+			            "consigneeaddress2": "43 Kilsay Crescent"
+			        }
+			    ],
+			    "count": 146
+			}</pre>
+		</div>
+	</div>
+	
+</div>
+	  	</div>
+  	</div>
+</div>
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script src="/resources/layui-v2.5.6/layui/layui.js?v="></script>
+<script src="/resources/js/jquery.min.js"></script>
+<script src="/resources/js/base64.js"></script>
+<script src="/resources/js/jquery.qrcode.min.js"></script> 
+<script src="/resources/js/math.min.js"></script>
+<script src="/resources/layuiAdmin/modules/decimal.js"></script>
+<script>
+	layui.config({
+		version: '',
+		base : '/resources/layuiAdmin/' //静态资源所在路径
+	}).extend({
+		index : 'lib/index' //主入口模块
+	});
+</script><script>
+layui.use(['index', 'common', 'code'], function(){
+   	var $ = layui.$;
+
+   	layui.code({elem: 'pre', about: false});
+	$("[data-api='pageOrders']").addClass("layui-show");
+   	
+   	$("[data-api]").click(function(){
+   		var api = $(this).attr("data-api");
+   		location.href = '/api/doc?api='+api;
+   	})
+   	
+   	$(".layui-card-header").click(function(){
+   		$(this).siblings(".layui-card-body").addClass("layui-anim layui-anim-upbit").toggle();
+   		$(this).find(".layui-icon").toggleClass("layui-icon-up layui-icon-down");
+   	})
+   	
+});
+</script>
+</body>
+</html>

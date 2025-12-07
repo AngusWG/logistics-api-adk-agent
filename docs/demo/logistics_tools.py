@@ -5,11 +5,13 @@
 # @Email  : z740713651@outlook.com
 # @File   : logistics_tools.py
 # logistics_tools.py
-import requests
 import json
+
+import requests
 
 # Mock API 服务器的基础 URL
 BASE_URL = "http://127.0.0.1:5000/api"
+
 
 def check_shipping_status(order_id: str):
     """
@@ -31,6 +33,7 @@ def check_shipping_status(order_id: str):
     except requests.exceptions.RequestException as e:
         return json.dumps({"error": f"Network Error: {e}"})
 
+
 def create_new_shipment(origin: str, destination: str):
     """
     通过调用 Mock API，创建一个新的货运单。
@@ -49,6 +52,7 @@ def create_new_shipment(origin: str, destination: str):
     except requests.exceptions.RequestException as e:
         return json.dumps({"error": f"Network Error or API Down: {e}"})
 
+
 # ----------------------------------------------------
 # 工具 Schema 定义 (用于传递给 Gemini 模型)
 # ----------------------------------------------------
@@ -56,11 +60,8 @@ def create_new_shipment(origin: str, destination: str):
 # 映射：Python 函数名 -> 实际的 Python 函数对象
 AVAILABLE_FUNCTIONS = {
     "check_shipping_status": check_shipping_status,
-    "create_new_shipment": create_new_shipment
+    "create_new_shipment": create_new_shipment,
 }
 
 # 工具列表：将 Python 函数转换为 Gemini 模型可理解的工具列表
-TOOL_LIST = [
-    check_shipping_status,
-    create_new_shipment
-]
+TOOL_LIST = [check_shipping_status, create_new_shipment]
