@@ -4,9 +4,9 @@
 
 AxonScale Interview Question: Google AI Agent
 
-- [ ] 项目功能了解
-  - [ ] gemini 怎么和本地服务通信
-  - [ ] demo 测试
+- [x] 项目功能了解
+  - [x] gemini 怎么和本地服务通信
+  - [x] demo 测试
 - [ ] 架构模块明确
   - [ ] 架构图 用例图 [[架构图]]
 - [ ] 待办清单
