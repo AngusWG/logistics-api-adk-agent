@@ -4,7 +4,7 @@
 
 
 - [ ] logistics_api_adk_agent 项目结构
-- [ ] 爬取 api 文档
+- [x] 爬取 api 文档
 - [ ] 丢给 ai 形成 接口
   - 保证通用 使用 pydantic request response 结构
   - 组装成 TOOL_LIST
