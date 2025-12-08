@@ -34,74 +34,43 @@ class APIInfo:
         url = self.url
         method = self.method
         request_class = self.request_model
-        response_class = self.response_model
 
-        # 动态构建函数名
-        func_name = f"{self.name.lower()}"
+        # response_class = self.response_model # ai会进行处理后返回给用户 所以用不用到这个
 
-        def api_caller(**kwargs) -> str:
+        def api_caller(request: request_class) -> str:
             """内部函数，用于实际调用API"""
-            try:
-                full_url = f"{conf.SERVER_BASE_URL}{url}"
+            full_url = f"{conf.SERVER_BASE_URL}{url}"
 
-                # 验证和封装请求数据
-                request_model_instance = request_class(**kwargs)
+            if method.upper() == "POST":
+                response = requests.post(
+                    full_url,
+                    data=request.model_dump_json(),
+                    headers={"Content-Type": "application/json"},
+                    timeout=5,
+                )
+            elif method.upper() == "GET":
+                response = requests.get(
+                    full_url, params=request.model_dump(), timeout=5
+                )
+            else:
+                return json.dumps({"error": f"Unsupported method: {method}"})
 
-                # 转换为JSON负载
-                payload = request_model_instance.model_dump_json()
+            response.raise_for_status()
+            return response.text
 
-                # 发送请求
-                if method.upper() == "POST":
-                    response = requests.post(
-                        full_url,
-                        data=payload,
-                        headers={"Content-Type": "application/json"},
-                        timeout=5,
-                    )
-                elif method.upper() == "GET":
-                    response = requests.get(full_url, params=kwargs, timeout=5)
-                else:
-                    return json.dumps({"error": f"Unsupported method: {method}"})
-
-                response.raise_for_status()
-
-                # 返回响应的原始JSON字符串
-                return response.text
-
-            except requests.exceptions.RequestException as e:
-                error_details = {
-                    "error": f"API Error: {e.__class__.__name__}",
-                    "details": str(e),
-                }
-                return json.dumps(error_details)
-            except Exception as e:
-                error_details = {
-                    "error": f"Data Validation Error: {e.__class__.__name__}",
-                    "details": str(e),
-                }
-                return json.dumps(error_details)
-
-        # 设置函数名和文档字符串
-        api_caller.__name__ = func_name
-        request_fields = []
-        for field_name, field_info in request_class.model_fields.items():
-            field_type = (
-                field_info.annotation.__name__
-                if hasattr(field_info.annotation, "__name__")
-                else str(field_info.annotation)
-            )
-            desc = field_info.description or "no description"
-            request_fields.append(f"{field_name}: {field_type} (description: {desc})")
+        api_caller.__name__ = self.name.lower()
+        api_caller.__qualname__ = api_caller.__name__
 
         docstring = f"""
 {self.describe}
-通过调用 {method} {conf.SERVER_BASE_URL}{url} API，完成 {request_class.__name__} 描述的操作。
+通过调用 {self.method} {conf.SERVER_BASE_URL}{self.url} API，完成操作。
 
 Args:
-    {chr(10).join(['    ' + f for f in request_fields])}
+    tool_input ({request_class.__name__}): 包含所有请求参数的 Pydantic 模型实例。
+        包含字段: {', '.join(request_class.model_fields.keys())}
 
 Returns:
-    包含 {response_class.__name__} 结构数据的 JSON 字符串。
+    包含 {self.response_model.__name__} 结构数据的 JSON 字符串。
         """
         api_caller.__doc__ = docstring
 

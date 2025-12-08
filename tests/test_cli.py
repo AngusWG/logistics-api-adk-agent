@@ -29,5 +29,5 @@ class CoreTest(testutils.BaseTestCase):
     def test_run_server_status(self):
         from logistics_api_adk_agent.__main__ import run
 
-        res = run("查看一下服务器状态 密钥 123456")
-        assert res == "你好"
+        res = run("查看一下服务器状态 密钥 123456 如果正常 请返回 服务器状态正常")
+        assert "服务器状态正常" in res
