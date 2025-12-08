@@ -6,6 +6,6 @@
 # @File   : __init__.py
 
 
-from logistics_api_adk_agent.apis.server_status import ServerStatus
+from logistics_api_adk_agent.apis.server_status import server_status
 
-apis_list = [ServerStatus]
+apis_list = [server_status]

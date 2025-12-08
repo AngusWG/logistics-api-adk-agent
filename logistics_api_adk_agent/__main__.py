@@ -29,5 +29,11 @@ def version() -> str:
     return logistics_api_adk_agent.__version__
 
 
+def run(string) -> str:
+    from logistics_api_adk_agent.agent_client import run_agent_workflow
+
+    return run_agent_workflow(string)
+
+
 if __name__ == "__main__":
     entry_point()

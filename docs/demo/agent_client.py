@@ -62,7 +62,8 @@ def run_agent_workflow(prompt: str):
             # 准备函数调用的结果对象
             function_responses.append(
                 types.Part.from_function_response(
-                    name=func_name, response={"result": tool_output}  # 将工具输出作为结果
+                    name=func_name,
+                    response={"result": tool_output},  # 将工具输出作为结果
                 )
             )
         else:

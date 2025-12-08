@@ -14,28 +14,29 @@ load_dotenv()
 
 
 class Config:
-    project_name: str = "logistics_api_adk_agent"
+    PROJECT_NAME: str = "logistics_api_adk_agent"
 
     LOG_FORMAT: str = (
-        "[%(asctime)s] [%(levelname)s]: "
-        "%(message)s [%(pathname)s <%(lineno)d>]"
+        "[%(asctime)s] [%(levelname)s]: " "%(message)s [%(pathname)s <%(lineno)d>]"
     )
     LOG_LEVEL: str = "INFO"
     log_file_dir: str = "."
-    sentry_dns: str = None
+    SENTRY_DNS: str = None
+    # 必改
+    SERVER_BASE_URL: str = "http://127.0.0.1:8000"
 
     def __init__(self):
         """
         >>> Config()
         read config.yaml from...
         """
-        print(f"=== Prepare {self.project_name} config start ===")
+        print(f"=== Prepare {self.PROJECT_NAME} config start ===")
 
         # read config from env
         uppercase_vars = [var for var in vars(Config) if not var.startswith("__")]
 
         for var_name in uppercase_vars:
-            _var_name = (self.project_name + "__" + var_name).upper()
+            _var_name = (self.PROJECT_NAME + "__" + var_name).upper()
             env_value = os.environ.get(_var_name)
             if env_value is not None:
                 var_type = typing.get_type_hints(Config).get(
@@ -46,7 +47,7 @@ class Config:
                 print(f"read from ENVIRON: {_var_name} = {env_value}")
                 setattr(self, var_name, var_type(env_value))
 
-        print(f"=== Prepare {self.project_name} config finish===")
+        print(f"=== Prepare {self.PROJECT_NAME} config finish===")
 
 
 conf = Config()

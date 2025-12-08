@@ -7,15 +7,14 @@
 
 
 from google.genai import types
-from logistics_tools import AVAILABLE_FUNCTIONS, TOOL_LIST
 
-from logistics_api_adk_agent.env import logger, genai_client
-
+from logistics_api_adk_agent.env import genai_client, logger
+from logistics_api_adk_agent.tools import AVAILABLE_FUNCTIONS, TOOL_LIST
 
 # 确保设置了 GEMINI_API_KEY 环境变量
 
 
-def run_agent_workflow(prompt: str):
+def run_agent_workflow(prompt: str) -> str:
     """
     执行智能体工作流程：发送请求 -> 处理函数调用 -> 返回最终回复。
     """
@@ -56,7 +55,8 @@ def run_agent_workflow(prompt: str):
             # 准备函数调用的结果对象
             function_responses.append(
                 types.Part.from_function_response(
-                    name=func_name, response={"result": tool_output}  # 将工具输出作为结果
+                    name=func_name,
+                    response={"result": tool_output},  # 将工具输出作为结果
                 )
             )
         else:

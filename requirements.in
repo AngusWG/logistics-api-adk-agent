@@ -4,6 +4,5 @@ fire
 PyYAML
 traceback-with-variables
 python-dotenv
-flask
 google-genai
 requests

@@ -27,33 +27,28 @@ def init_logging(log_level: str, log_format: str, project_name: str) -> None:
     """
     base_handler = logging.StreamHandler()
 
-    # 注意：%(name)s 用于区分不同的 logger
-    # 假设 conf.LOG_FORMAT 已经包含 %(name)s
     logging.basicConfig(handlers=[base_handler], format=log_format, level=log_level)
 
-    # 设置根 logger 的级别
     root_logger = logging.getLogger()
-    try:
-        root_logger.setLevel(log_level.upper())
-    except ValueError:
-        root_logger.setLevel(logging.INFO)  # 默认值
-
+    root_logger.setLevel(log_level.upper())
     logging.getLogger(project_name).info("Logger configuration finished.")
 
 
 # 在模块加载时执行初始化
-init_sentry(conf.base.SENTRY_DNS)
-init_logging(conf.base.LOG_LEVEL, conf.base.LOG_FORMAT, conf.base.PROJECT_NAME)
+init_sentry(conf.SENTRY_DNS)
+init_logging(conf.LOG_LEVEL, conf.LOG_FORMAT, conf.PROJECT_NAME)
 
 # ------------------------------------------------
 # 暴露全局 Logger
 # ------------------------------------------------
 # 按照您的要求，使用配置中的项目名称获取全局 logger 实例。
-logger = logging.getLogger(conf.base.PROJECT_NAME)
+logger = logging.getLogger(conf.PROJECT_NAME)
 
 try:
     genai_client = genai.Client()
 except Exception as e:
-    logger.error("错误: 无法初始化 Gemini Client。请检查是否设置了 GEMINI_API_KEY 环境变量。")
+    logger.error(
+        "错误: 无法初始化 Gemini Client。请检查是否设置了 GEMINI_API_KEY 环境变量。"
+    )
     logger.error(f"{e}")
     exit()

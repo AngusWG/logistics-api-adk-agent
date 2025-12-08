@@ -7,6 +7,9 @@ isort
 typing_extensions
 pip-tools
 tqdm
+fastapi
+flask
+uvicorn[standard]==0.35.0
 
 # Linting
 flake8
