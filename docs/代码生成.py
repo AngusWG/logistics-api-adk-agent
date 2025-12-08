@@ -7,10 +7,11 @@
 import os
 import time
 
+import lxml.html
+import retry
 import tqdm
 from dotenv import load_dotenv
 from google import genai
-import lxml.html
 
 load_dotenv("../.env")
 prompt = """
@@ -61,10 +62,15 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {{
 client = genai.Client()
 code_dir = "genera_code"
 os.makedirs(code_dir, exist_ok=True)
-file_list = os.listdir("cntodd-apis")[3:]
+file_list = os.listdir("cntodd-apis")
 
-for index, file in tqdm.tqdm(enumerate(file_list)):
-    print(index, file)
+
+@retry.retry(exceptions=(genai.errors.ClientError), tries=3, delay=5)
+def handle_one(file: str, index: int):
+    if file.replace("html", "md") in os.listdir(code_dir):
+        print(f"已存在 {file} 跳过")
+        return
+
     with open(os.path.join("cntodd-apis", file), "r", encoding="utf8") as f:
         html_content = f.read()
 
@@ -78,9 +84,18 @@ for index, file in tqdm.tqdm(enumerate(file_list)):
     # print(_prompt)
 
     response = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
-    filename = os.path.join(code_dir, file.replace("html", "md"))
 
-    with open(filename, "w", encoding="utf8") as f:
+    target_filename = os.path.join(code_dir, file.replace("html", "md"))
+    with open(target_filename, "w", encoding="utf8") as f:
         f.write(response.text.strip())
-    print(f"{index} {file} save to {filename}")
-    time.sleep(2)
+    print(f"{index} {file} save to {target_filename}")
+
+
+def main():
+    for index, file in enumerate(file_list):
+        print(index, file)
+        handle_one(file, index)
+
+
+if __name__ == "__main__":
+    main()
