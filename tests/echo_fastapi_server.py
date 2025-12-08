@@ -7,7 +7,7 @@
 import datetime
 import inspect
 import json
-from typing import Any, Callable, ClassVar, Dict, List, Optional, Tuple, Type
+from typing import Any, Callable, ClassVar, Dict, List, Optional, Tuple, Type, Union
 
 import uvicorn
 from fastapi import Depends, FastAPI, HTTPException, Path, Query, Request
@@ -16,16 +16,39 @@ from pydantic import BaseModel
 from logistics_api_adk_agent.apis import apis_list
 from logistics_api_adk_agent.apis.base import APIInfo
 
-mock_time = datetime.datetime.now().isoformat()
-MOCK_DATA: Dict[Tuple[str, str], Any] = {
-    ("server_status", "get"): {
-        (("keyword", "123456"),): dict(Status="normal", time=mock_time),
-        (("keyword", "11222"),): dict(Status="error code", time=mock_time),
-        (("keyword", ""),): dict(Status="error code for None", time=mock_time),
-    }
-}
+from mock_data import MOCK_DATA
 
 app = FastAPI(title="Dynamic API Server")
+
+
+def recursive_dict_to_sorted_tuple(data: Union[Dict, List, Any]) -> Union[Tuple, List, Any]:
+    """
+    递归地将字典转换为排序后的元组，以便用于查找 MOCK_DATA。
+
+    Args:
+        data: 要转换的数据（可能是 dict, list, 或其他 Any）。
+
+    Returns:
+        转换后的数据 (tuple, list, 或其他 Any)。
+    """
+    if isinstance(data, dict):
+        # 1. 对字典的键进行排序 (确保顺序一致)
+        sorted_items = sorted(data.items())
+        # 2. 递归处理每个值
+        converted_items = []
+        for key, value in sorted_items:
+            # 键必须是字符串，值需要递归转换
+            converted_items.append((key, recursive_dict_to_sorted_tuple(value)))
+        # 3. 将结果转换为元组
+        return tuple(converted_items)
+
+    elif isinstance(data, list):
+        # 递归处理列表中的每个元素
+        return [recursive_dict_to_sorted_tuple(item) for item in data]
+
+    else:
+        # 其他类型（如 int, float, str, None, bool）保持不变
+        return data
 
 
 def create_dynamic_route(api_metadata: APIInfo):
@@ -51,14 +74,20 @@ def create_dynamic_route(api_metadata: APIInfo):
 
         # 3. 查找 MOCK_DATA
         mock_key = (api_name, method)
+        print("=" * 20)
+        print(f"get access: {mock_key}")
+        print(f"request data: {request_data}")
         mock_entries = MOCK_DATA.get(mock_key, [])
 
         # 将请求数据转换为字典进行匹配
         request_dict = request_data.model_dump(exclude_none=True)
-        request_key = tuple(request_dict.items())
+        # 因为 dict 不能做key 所以转换成 元组 也可也考虑 json 字符串, 但是代码已经生成了,而且 python 数据可读性比较高
+        request_key = recursive_dict_to_sorted_tuple(request_dict)
+
         # 查找匹配的 mock 响应
 
         matched_response_status = mock_entries.get(request_key)
+        print(f"matched_response_status: {matched_response_status}")
         if matched_response_status is None:
             raise Exception(f"{func_name} 无参数 {request_dict} 对应的 response")
         # 5. 返回 response_class 实例 (FastAPI 会将其序列化)

@@ -1,112 +1,68 @@
-``` python
-from typing import List, Dict, Any, Optional, Tuple
 from pydantic import BaseModel, Field
-import datetime # For mock data, though not strictly used by models
-# from logistics_api_adk_agent.apis.base import APIInfo # Assuming this import is available
+from typing import List, Dict, Tuple, Any
+from datetime import datetime
 
-# Define a placeholder for APIInfo if the actual module is not installed for testing purposes
-class APIInfo:
-    def __init__(self, name: str, describe: str, url: str, method: str, request_model: BaseModel, response_model: BaseModel):
-        self.name = name
-        self.describe = describe
-        self.url = url
-        self.method = method
-        self.request_model = request_model
-        self.response_model = response_model
+# 请求参数模型
+class Authorization(BaseModel):
+    code: str = Field(..., description="客户编码", min_length=5, max_length=20)
+    token: str = Field(..., description="API授权码", min_length=50, max_length=50)
 
+class ChannelRequest(BaseModel):
+    authorization: Authorization = Field(..., description="包含客户编码和授权码的授权信息")
 
-class PageDataRequest(BaseModel):
-    page_num: int = Field(..., description="当前页码，从1开始")
-    page_size: int = Field(..., description="每页数据量")
-    keyword: Optional[str] = Field(None, description="可选的查询关键词")
+# 响应数据子模型
+class ChannelData(BaseModel):
+    channelid: str = Field(..., description="渠道代码")
+    channeltype: str = Field(..., description="渠道类型")
+    channelname: str = Field(..., description="渠道简称")
+    channelnamecn: str = Field(..., description="渠道中文名称")
+    channelnameen: str = Field(..., description="渠道英文名称")
 
+# 响应数据模型
+class ChannelResponse(BaseModel):
+    code: int = Field(..., description="接口请求是否通过, 0：表示接口请求通过，其他表示失败")
+    msg: str = Field(..., description="说明信息")
+    data: List[ChannelData] = Field(..., description="渠道信息列表")
 
-class PageDataResponse(BaseModel):
-    total_count: int = Field(..., description="总数据量")
-    page_num: int = Field(..., description="当前页码")
-    page_size: int = Field(..., description="每页数据量")
-    data: List[Dict[str, Any]] = Field(..., description="页面数据列表")
-
-
-page_data = APIInfo(
-    name="page_data",
-    describe="分页数据查询",
-    url="/page_data",
-    method="GET",
-    request_model=PageDataRequest,
-    response_model=PageDataResponse,
+# APIInfo 实例
+query_channel = APIInfo(
+    name="query_channel",
+    describe="查询渠道信息",
+    url="http://www.cntodd.top//api/order/channel",
+    method="POST",
+    request_model=ChannelRequest,
+    response_model=ChannelResponse,
 )
 
 ###
 
-# MOCK_DATA for testing
-# For consistency with the example, we will define a mock_time
-mock_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-# Sample data for pagination responses
-sample_item_1 = {"id": 1, "name": "Product A", "price": 10.50}
-sample_item_2 = {"id": 2, "name": "Product B", "price": 20.75}
-sample_item_3 = {"id": 3, "name": "Product C", "price": 15.00}
-sample_item_4 = {"id": 4, "name": "Product D", "price": 5.99}
-sample_item_5 = {"id": 5, "name": "Product E", "price": 30.20}
-sample_item_6 = {"id": 6, "name": "Product F", "price": 12.30}
-
+mock_time = datetime.now().isoformat()
 MOCK_DATA: Dict[Tuple[str, str], Any] = {
-    ("server_status", "get"): {
-        (("keyword", "123456"),): dict(Status="normal", time=mock_time),
-        (("keyword", "11222"),): dict(Status="error code", time=mock_time),
-        (("keyword", ""),): dict(Status="error code for None", time=mock_time),
-    },
-    ("page_data", "get"): {
-        # Scenario 1: First page, 2 items per page, with keyword "product"
-        (("page_num", 1), ("page_size", 2), ("keyword", "product")): dict(
-            total_count=6,
-            page_num=1,
-            page_size=2,
-            data=[sample_item_1, sample_item_2]
+    ("query_channel", "post"): {
+        (
+            ("authorization", (("code", "KJHB"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fed"))),
+        ): dict(
+            code=0,
+            msg="调用成功",
+            data=[
+                {"channelid": "CN_EMS", "channeltype": "快递", "channelname": "中国邮政", "channelnamecn": "中国邮政", "channelnameen": "China Post"},
+                {"channelid": "HK_TNT", "channeltype": "专线", "channelname": "香港TNT", "channelnamecn": "香港TNT", "channelnameen": "Hong Kong TNT"},
+                {"channelid": "MS_KQ", "channeltype": "专线", "channelname": "美森快船", "channelnamecn": "美森快船", "channelnameen": "Mason Clippers"},
+            ],
         ),
-        # Scenario 2: Second page, 2 items per page, with keyword "product"
-        (("page_num", 2), ("page_size", 2), ("keyword", "product")): dict(
-            total_count=6,
-            page_num=2,
-            page_size=2,
-            data=[sample_item_3, sample_item_4]
+        (
+            ("authorization", (("code", "ERROR"), ("token", "invalid-token-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"))),
+        ): dict(
+            code=1001,
+            msg="授权失败，请检查code和token",
+            data=[],
         ),
-        # Scenario 3: Third page, 2 items per page, with keyword "product"
-        (("page_num", 3), ("page_size", 2), ("keyword", "product")): dict(
-            total_count=6,
-            page_num=3,
-            page_size=2,
-            data=[sample_item_5, sample_item_6]
-        ),
-        # Scenario 4: First page, 3 items per page, no keyword (keyword=None)
-        (("page_num", 1), ("page_size", 3), ("keyword", None)): dict(
-            total_count=6,
-            page_num=1,
-            page_size=3,
-            data=[sample_item_1, sample_item_2, sample_item_3]
-        ),
-        # Scenario 5: Second page, 3 items per page, no keyword (keyword=None)
-        (("page_num", 2), ("page_size", 3), ("keyword", None)): dict(
-            total_count=6,
-            page_num=2,
-            page_size=3,
-            data=[sample_item_4, sample_item_5, sample_item_6]
-        ),
-        # Scenario 6: Query with a keyword that yields no results
-        (("page_num", 1), ("page_size", 10), ("keyword", "nonexistent")): dict(
-            total_count=0,
-            page_num=1,
-            page_size=10,
-            data=[]
-        ),
-        # Scenario 7: Requesting a page beyond total, still returns empty data for that page
-        (("page_num", 10), ("page_size", 5), ("keyword", None)): dict(
-            total_count=6, # Total count might still be correct
-            page_num=10,
-            page_size=5,
-            data=[] # But no data for this page
+        (
+            ("authorization", (("code", "KJHB"), ("token", "short"))),
+        ): dict(
+            code=400,
+            msg="请求参数校验失败：token长度不足50",
+            data=[],
         ),
     }
 }
-```

@@ -21,6 +21,22 @@ from pydantic import BaseModel, Field
 
 from logistics_api_adk_agent.apis.base import APIInfo
 
+import json
+from dataclasses import dataclass
+from typing import Callable, Literal, Type
+
+import requests
+from pydantic import BaseModel
+
+
+@dataclass(frozen=True)
+class APIInfo:
+    name: str
+    describe: str
+    url: str
+    method: Literal["GET", "POST"]
+    request_model: Type[BaseModel]
+    response_model: Type[BaseModel]
 
 class StatusRequest(BaseModel):
     keyword: str = Field(..., description="服务器查询密钥")
@@ -41,8 +57,10 @@ server_status = APIInfo(
 )
 ```
 
-将 ｛page_data｝ 也生成对应的python代码
-并生成对应的测试用例
+将 
+｛page_data｝ 
+生成对应的python代码
+并生成对应的测试用例数据
 参考
 ``` python
 MOCK_DATA: Dict[Tuple[str, str], Any] = {{
@@ -54,8 +72,10 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {{
 }}
 ```
 
-请直接给出python代码
-测试数据代码用 ### 分割 
+- 请直接给 出python 代码
+- 测试用例数据代码用和 ### 分割
+- 请只给出 新生成的代码
+- 不用给出 APIInfo 定义
 
 """  # 使用 双大括号 {{ 和 }} 来表示字面量 { 和 }。
 
@@ -80,9 +100,9 @@ def handle_one(file: str, index: int):
     content_data = tree.xpath(xpath)
     format_content = " ".join(content_data)
     format_content = " ".join(format_content.split())
-    _prompt = prompt.format(page_data=format_content)
-    # print(_prompt)
-
+    _prompt = prompt.replace("｛page_data｝", format_content)
+    print(_prompt)
+    input("x")
     response = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
 
     target_filename = os.path.join(code_dir, file.replace("html", "md"))

@@ -1,108 +1,68 @@
-```python
+from pydantic import BaseModel, Field, conlist
 from typing import List, Dict, Tuple, Any, Optional
-from pydantic import BaseModel, Field
-# 假设 APIInfo 从现有模块导入
-from logistics_api_adk_agent.apis.base import APIInfo
+from datetime import datetime
 
+# 请求参数模型
+class Authorization(BaseModel):
+    code: str = Field(..., description="客户编码", min_length=5, max_length=20)
+    token: str = Field(..., description="API授权码", min_length=50, max_length=50)
 
-# page_data 的请求模型
-class PageDataRequest(BaseModel):
-    page: int = Field(1, description="当前页码，默认为1")
-    page_size: int = Field(10, description="每页返回的条目数，默认为10")
-    keyword: Optional[str] = Field(None, description="查询关键字，可选")
+class CurrencyRequest(BaseModel):
+    authorization: Authorization = Field(..., description="包含客户编码和授权码的授权信息")
 
+# 响应数据子模型
+class CurrencyData(BaseModel):
+    code: str = Field(..., description="币别编码")
+    cnname: str = Field(..., description="中文名称")
+    enname: str = Field(..., description="英文名称")
 
-# page_data 列表中的单个数据项模型
-class PageDataItem(BaseModel):
-    id: str = Field(..., description="数据项唯一标识")
-    title: str = Field(..., description="数据项标题")
-    content: str = Field(..., description="数据项内容摘要")
-    created_at: str = Field(..., description="创建时间，ISO格式字符串")
+# 响应数据模型
+class CurrencyResponse(BaseModel):
+    code: int = Field(..., description="接口请求是否通过, 0：表示接口请求通过，其他表示失败")
+    msg: str = Field(..., description="说明信息")
+    data: List[CurrencyData] = Field(..., description="币别信息列表")
 
-
-# page_data 的响应模型
-class PageDataResponse(BaseModel):
-    items: List[PageDataItem] = Field(..., description="当前页的数据列表")
-    total: int = Field(..., description="总数据条数")
-    page: int = Field(..., description="当前页码")
-    page_size: int = Field(..., description="每页大小")
-
-
-# page_data 的 APIInfo 配置
-page_data_api = APIInfo(
-    name="get_page_data",
-    describe="分页查询数据",
-    url="/page_data",
-    method="GET",
-    request_model=PageDataRequest,
-    response_model=PageDataResponse,
+# APIInfo 实例
+query_currency = APIInfo(
+    name="query_currency",
+    describe="查询系统可用的币别",
+    url="http://www.cntodd.top//api/order/currency",
+    method="POST",
+    request_model=CurrencyRequest,
+    response_model=CurrencyResponse,
 )
 
 ###
-# 测试数据（Mock Data）
-# 导入 datetime 用于生成 mock_time，如果需要的话
-from datetime import datetime
-# mock_time = datetime.now().isoformat() # 如果 server_status 需要，可以保留
 
+mock_time = datetime.now().isoformat()
 MOCK_DATA: Dict[Tuple[str, str], Any] = {
-    # 如果原始的 server_status 数据也需要包含在这里，可以添加
-    # ("server_status", "get"): {
-    #     (("keyword", "123456"),): dict(Status="normal", time=mock_time),
-    #     (("keyword", "11222"),): dict(Status="error code", time=mock_time),
-    #     (("keyword", ""),): dict(Status="error code for None", time=mock_time),
-    # },
-    ("get_page_data", "get"): {
-        # 测试用例1: 默认页码和大小，无关键字
-        (("page", 1), ("page_size", 10)): {
-            "items": [
-                {"id": "item_001", "title": "新闻标题A", "content": "这是第一篇新闻的摘要内容。", "created_at": "2023-01-01T10:00:00"},
-                {"id": "item_002", "title": "通知公告B", "content": "这是第二篇公告的摘要内容。", "created_at": "2023-01-01T10:05:00"},
-                {"id": "item_003", "title": "科技前沿C", "content": "这是第三篇科技文章的摘要内容。", "created_at": "2023-01-01T10:10:00"},
-                {"id": "item_004", "title": "生活小贴士D", "content": "这是第四篇生活贴士的摘要内容。", "created_at": "2023-01-01T10:15:00"},
-                {"id": "item_005", "title": "产品更新E", "content": "这是第五篇产品更新的摘要内容。", "created_at": "2023-01-01T10:20:00"},
+    ("query_currency", "post"): {
+        (
+            ("authorization", (("code", "KJHB"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fed"))),
+        ): dict(
+            code=0,
+            msg="调用成功",
+            data=[
+                {"code": "CNY", "cnname": "人民币", "enname": "CNY"},
+                {"code": "HKG", "cnname": "港币", "enname": "HKD"},
+                {"code": "USD", "cnname": "美元", "enname": "USD"},
+                {"code": "EUR", "cnname": "欧元", "enname": "EUR"},
+                {"code": "GBP", "cnname": "英镑", "enname": "GBP"},
             ],
-            "total": 25, # 假设总共有25条数据
-            "page": 1,
-            "page_size": 10,
-        },
-        # 测试用例2: 第二页，每页5条，无关键字
-        (("page", 2), ("page_size", 5)): {
-            "items": [
-                {"id": "item_006", "title": "新闻标题F", "content": "这是第六篇新闻的摘要内容。", "created_at": "2023-01-01T10:25:00"},
-                {"id": "item_007", "title": "通知公告G", "content": "这是第七篇公告的摘要内容。", "created_at": "2023-01-01T10:30:00"},
-                {"id": "item_008", "title": "科技前沿H", "content": "这是第八篇科技文章的摘要内容。", "created_at": "2023-01-01T10:35:00"},
-                {"id": "item_009", "title": "生活小贴士I", "content": "这是第九篇生活贴士的摘要内容。", "created_at": "2023-01-01T10:40:00"},
-                {"id": "item_010", "title": "产品更新J", "content": "这是第十篇产品更新的摘要内容。", "created_at": "2023-01-01T10:45:00"},
-            ],
-            "total": 25,
-            "page": 2,
-            "page_size": 5,
-        },
-        # 测试用例3: 关键字搜索，第一页，每页10条
-        (("keyword", "新闻"), ("page", 1), ("page_size", 10)): {
-            "items": [
-                {"id": "item_news_01", "title": "突发新闻快报", "content": "今日重要事件的最新报道。", "created_at": "2023-02-01T11:00:00"},
-                {"id": "item_news_02", "title": "国际新闻聚焦", "content": "全球热点事件的深度分析。", "created_at": "2023-02-01T11:15:00"},
-            ],
-            "total": 2, # 假设只搜到2条新闻
-            "page": 1,
-            "page_size": 10,
-        },
-        # 测试用例4: 关键字搜索，无结果
-        (("keyword", "不存在的关键字"), ("page", 1), ("page_size", 10)): {
-            "items": [],
-            "total": 0,
-            "page": 1,
-            "page_size": 10,
-        },
-        # 测试用例5: 关键字为空字符串，模拟无关键字查询 (Optional[str] 会处理为 None)
-        # 如果需要区分 "" 和 None，可以根据业务逻辑调整
-        (("keyword", ""), ("page", 1), ("page_size", 10)): {
-            "items": [], # 或者返回所有数据的第一页，取决于实际实现
-            "total": 0, # 这里假设空字符串关键字不返回任何数据
-            "page": 1,
-            "page_size": 10,
-        },
+        ),
+        (
+            ("authorization", (("code", "ERROR"), ("token", "invalid-token-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"))),
+        ): dict(
+            code=1001,
+            msg="授权失败，请检查code和token",
+            data=[],
+        ),
+        (
+            ("authorization", (("code", "KJHB"), ("token", "short"))),
+        ): dict(
+            code=400,
+            msg="请求参数校验失败：token长度不足50",
+            data=[],
+        ),
     }
 }
-```
