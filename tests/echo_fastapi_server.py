@@ -7,10 +7,11 @@
 import datetime
 import inspect
 import json
+from functools import wraps
 from typing import Any, Callable, ClassVar, Dict, List, Optional, Tuple, Type, Union
 
 import uvicorn
-from fastapi import Depends, FastAPI, HTTPException, Path, Query, Request
+from fastapi import Body, Depends, FastAPI, HTTPException, Path, Query, Request
 from mock_data import MOCK_DATA
 from pydantic import BaseModel
 
@@ -45,7 +46,7 @@ def recursive_dict_to_sorted_tuple(
 
     elif isinstance(data, list):
         # 递归处理列表中的每个元素
-        return [recursive_dict_to_sorted_tuple(item) for item in data]
+        return tuple((recursive_dict_to_sorted_tuple(item) for item in data))
 
     else:
         # 其他类型（如 int, float, str, None, bool）保持不变
@@ -62,41 +63,60 @@ def create_dynamic_route(api_metadata: APIInfo):
     request_class: Type[BaseModel] = api_metadata.request_model
     response_class: Type[BaseModel] = api_metadata.response_model
 
-    # 1. 构造唯一的函数名
     func_name: str = f"api_{method}_{url.replace('/', '_')}"
 
-    # 2. 动态生成路由处理函数
-    # **关键点：** 使用 request_class 作为参数类型注解，FastAPI 会自动处理请求体/查询参数的解析和验证。
-    # 对于 GET 请求，request_data 会从查询参数中解析。
-    async def dynamic_handler(
-        request_data: request_class = Depends(),  # 使用 Depends() 确保 GET 请求的查询参数被正确解析
-    ) -> response_class:
+    if method in ["post", "put", "patch"]:
+
+        param_default = Body(..., embed=False)
+    else:
+        # 使用 Depends() 来解析查询参数 (GET)
+        param_default = Depends()
+
+    def signature_decorator(func: Callable) -> Callable:
+        sig = inspect.signature(func)
+        new_param = inspect.Parameter(
+            name="request_data",
+            kind=inspect.Parameter.POSITIONAL_OR_KEYWORD,
+            default=param_default,
+            annotation=request_class,
+        )
+        new_sig = sig.replace(parameters=[new_param])
+
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            return await func(*args, **kwargs)
+
+        wrapper.__signature__ = new_sig
+        wrapper.__name__ = func_name
+        return wrapper
+
+    @signature_decorator
+    async def dynamic_handler(request_data) -> response_class:
         """Dynamic API Handler based on MOCK_DATA lookup."""
 
-        # 3. 查找 MOCK_DATA
         mock_key = (api_name, method)
         print("=" * 20)
-        print(f"get access: {mock_key}")
-        print(f"request data: {request_data}")
+        print(f"  - get access: {mock_key}")
+        # print(f"request data: {request_data}")
+        print(f"  - request json data: {request_data.model_dump_json()}")
         mock_entries = MOCK_DATA.get(mock_key, [])
 
-        # 将请求数据转换为字典进行匹配
         request_dict = request_data.model_dump(exclude_none=True)
-        # 因为 dict 不能做key 所以转换成 元组 也可也考虑 json 字符串, 但是代码已经生成了,而且 python 数据可读性比较高
         request_key = recursive_dict_to_sorted_tuple(request_dict)
 
-        # 查找匹配的 mock 响应
-
         matched_response_status = mock_entries.get(request_key)
-        print(f"matched_response_status: {matched_response_status}")
+        print(f"  - matched_response_status: {matched_response_status}")
+
         if matched_response_status is None:
-            raise Exception(f"{func_name} 无参数 {request_dict} 对应的 response")
-        # 5. 返回 response_class 实例 (FastAPI 会将其序列化)
+            matched_response_status = [i for i in mock_entries.values()][0]
+            print(f"  - 未找到数据 匹配第一个数据: {matched_response_status}")
+            # raise (f"{func_name} 无参数 {request_dict} 对应的 response")
+
         return response_class(**matched_response_status)
 
     print(f"-> 注册路由: [{method.upper()}] {url}")
     route_decorator = getattr(app, method, None)
-    dynamic_handler.__name__ = func_name
+    # dynamic_handler.__name__ = func_name
     route_decorator(url, response_model=response_class)(dynamic_handler)
 
 

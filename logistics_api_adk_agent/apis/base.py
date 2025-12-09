@@ -12,6 +12,7 @@ import requests
 from pydantic import BaseModel
 
 from logistics_api_adk_agent.config import conf
+from logistics_api_adk_agent.env import logger
 
 
 @dataclass(frozen=True)
@@ -40,7 +41,9 @@ class APIInfo:
         def api_caller(request: request_class) -> str:
             """内部函数，用于实际调用API"""
             full_url = f"{conf.SERVER_BASE_URL}{url}"
-
+            logger.debug(f"---")
+            logger.debug(f"   调用: api {full_url}")
+            logger.debug(f"   参数: {request.model_dump_json()}")
             if method.upper() == "POST":
                 response = requests.post(
                     full_url,
@@ -56,6 +59,8 @@ class APIInfo:
                 return json.dumps({"error": f"Unsupported method: {method}"})
 
             response.raise_for_status()
+            logger.debug(f"返回结果 response: {response.text}｝")
+            logger.debug(f"---")
             return response.text
 
         api_caller.__name__ = self.name.lower()

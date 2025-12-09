@@ -6,6 +6,7 @@
 # @File   : env.py
 
 import logging
+import os
 from typing import Optional
 
 import sentry_sdk
@@ -21,28 +22,32 @@ def init_sentry(dns: Optional[str]) -> None:
         logging.getLogger(conf.base.PROJECT_NAME).info("Sentry initialized.")
 
 
-def init_logging(log_level: str, log_format: str, project_name: str) -> None:
-    """
-    配置 Python 日志系统的格式和级别。
-    """
+def setup_logging():
+    # 创建一个控制台处理器
     base_handler = logging.StreamHandler()
 
-    logging.basicConfig(handlers=[base_handler], format=log_format, level=log_level)
+    # 构建日志文件的完整路径
+    log_file_path = os.path.join(conf.log_file_dir, f"{conf.PROJECT_NAME}.log")
 
-    root_logger = logging.getLogger()
-    root_logger.setLevel(log_level.upper())
-    logging.getLogger(project_name).info("Logger configuration finished.")
+    # 确保日志文件所在目录存在，如果不存在则创建
+    if not os.path.exists(conf.log_file_dir):
+        os.makedirs(conf.log_file_dir)
+
+    # 创建一个文件处理器，指定日志文件的完整路径
+    file_handler = logging.FileHandler(log_file_path, encoding="utf-8")
+
+    # 设置日志格式
+    formatter = logging.Formatter(conf.LOG_FORMAT)
+    base_handler.setFormatter(formatter)
+    file_handler.setFormatter(formatter)
+
+    # 配置日志记录器，添加控制台处理器和文件处理器
+    logging.basicConfig(handlers=[base_handler, file_handler], format=conf.LOG_FORMAT)
 
 
-# 在模块加载时执行初始化
-init_sentry(conf.SENTRY_DNS)
-init_logging(conf.LOG_LEVEL, conf.LOG_FORMAT, conf.PROJECT_NAME)
-
-# ------------------------------------------------
-# 暴露全局 Logger
-# ------------------------------------------------
-# 按照您的要求，使用配置中的项目名称获取全局 logger 实例。
 logger = logging.getLogger(conf.PROJECT_NAME)
+setup_logging()
+logger.setLevel(conf.LOG_LEVEL)
 
 try:
     genai_client = genai.Client()

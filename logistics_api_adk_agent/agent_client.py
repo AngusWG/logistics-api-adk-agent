@@ -14,6 +14,47 @@ from logistics_api_adk_agent.tools import AVAILABLE_FUNCTIONS, TOOL_LIST
 # 确保设置了 GEMINI_API_KEY 环境变量
 
 
+def execute_tool_calls(function_calls: list[types.FunctionCall]) -> list[types.Part]:
+    """
+    复用工具调用逻辑：接收 FunctionCall 列表，执行本地函数，并返回结果 Part 列表。
+    """
+    function_responses = []
+
+    for function_call in function_calls:
+        func_name = function_call.name
+        func_args = dict(function_call.args)
+
+        logger.debug(f"    -> 准备调用函数: {func_name}，参数: {func_args}")
+
+        if func_name in AVAILABLE_FUNCTIONS:
+
+            function_to_call = AVAILABLE_FUNCTIONS[func_name]
+            try:
+                tool_output = function_to_call(**func_args)
+            except Exception as e:
+                tool_output = f"工具执行错误: {e}"
+
+            logger.debug(f"    -> 本地工具执行结果: {tool_output}")
+
+            function_responses.append(
+                types.Part.from_function_response(
+                    name=func_name,
+                    response={"result": tool_output},
+                )
+            )
+        else:
+            logger.debug(f"错误: 找不到本地工具 {func_name}")
+
+            function_responses.append(
+                types.Part.from_function_response(
+                    name=func_name,
+                    response={"error": f"本地找不到工具: {func_name}"},
+                )
+            )
+
+    return function_responses
+
+
 def run_agent_workflow(prompt: str) -> str:
     """
     执行智能体工作流程：发送请求 -> 处理函数调用 -> 返回最终回复。
@@ -32,40 +73,12 @@ def run_agent_workflow(prompt: str) -> str:
         logger.debug("\n--- 2. 模型决定直接回复 (无需工具) ---")
         return response.text
 
-    # 3. 处理函数调用 (执行本地代码)
     logger.debug("\n--- 2. 模型请求调用工具 (执行本地代码) ---")
 
-    # 存储所有函数调用结果，用于第二次调用
-    function_responses = []
+    function_responses = execute_tool_calls(response.function_calls)
 
-    for function_call in response.function_calls:
-        func_name = function_call.name
-        func_args = dict(function_call.args)
-
-        logger.debug(f"   -> 准备调用函数: {func_name}，参数: {func_args}")
-
-        # 查找并执行本地 Python 函数
-        if func_name in AVAILABLE_FUNCTIONS:
-            # ** 核心步骤：本地执行工具 **
-            function_to_call = AVAILABLE_FUNCTIONS[func_name]
-            tool_output = function_to_call(**func_args)
-
-            logger.debug(f"   -> 本地工具执行结果: {tool_output}")
-
-            # 准备函数调用的结果对象
-            function_responses.append(
-                types.Part.from_function_response(
-                    name=func_name,
-                    response={"result": tool_output},  # 将工具输出作为结果
-                )
-            )
-        else:
-            logger.debug(f"错误: 找不到本地工具 {func_name}")
-
-    # 4. 第二次调用：将工具结果回传给模型，生成最终回复
     logger.debug("\n--- 3. 将工具执行结果回传给 Gemini，生成最终回复 ---")
 
-    # 将原始用户请求和第一次模型的响应一起作为上下文
     contents = [
         types.Content(role="user", parts=[types.Part.from_text(prompt)]),
         response.candidates[0].content,
@@ -79,3 +92,50 @@ def run_agent_workflow(prompt: str) -> str:
     )
 
     return final_response.text
+
+
+def run_interactive_chat():
+    """
+    执行交互式聊天智能体工作流程。
+    """
+    logger.info("初始化 Gemini 聊天会话，并配置工具。")
+
+    # 1. 创建聊天会话，并在创建时配置工具
+    chat = genai_client.chats.create(
+        model="gemini-2.5-flash",
+        config=types.GenerateContentConfig(tools=TOOL_LIST),
+    )
+
+    print("\n" + "=" * 50)
+    print("🤖 智能物流客服已上线！(输入 '退出' 结束会话)")
+    print("=" * 50 + "\n")
+
+    # 2. 交互式循环
+    while True:
+        try:
+            # 获取用户输入
+            prompt = input("👤 您: ").strip()
+
+            if prompt.lower() in ["退出", "exit", "quit"]:
+                print("\n👋 感谢使用，会话结束。")
+                break
+
+            if not prompt:
+                continue
+
+            logger.info(f"用户请求: {prompt}")
+
+            response = chat.send_message(prompt)
+
+            while response.function_calls:
+                logger.debug("\n--- 模型请求调用工具 (执行本地代码) ---")
+                function_responses = execute_tool_calls(response.function_calls)
+                logger.debug("\n--- 将工具执行结果回传给 Gemini ---")
+                response = chat.send_message(function_responses)
+
+            # 模型没有 FunctionCall 时，返回最终文本
+            print(f"🤖 客服: {response.text}\n")
+
+        except KeyboardInterrupt:
+            print("\n👋 感谢使用，会话结束。")
+            break

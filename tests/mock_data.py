@@ -64,7 +64,7 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
             msg="授权失败，请检查code和token",
             data=[],
         ),
-        (("authorization", (("code", "KJHB"), ("token", "short"))),): dict(
+        (("authorization", (("code", "KJHBA"), ("token", "short"))),): dict(
             code=400,
             msg="请求参数校验失败：token长度不足50",
             data=[],
@@ -73,7 +73,10 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
 }
 # 示例请求数据
 mock_request_data_success = {
-    "authorization": {"code": "KJHB", "token": "c60bf762-01f7-470e-8c8f-acde06c81fed"},
+    "authorization": {
+        "code": "KJHBA",
+        "token": "c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas",
+    },
     "datas": [
         {
             "order": {
@@ -209,7 +212,10 @@ mock_response_data_fail_auth = {
 }
 
 mock_request_data_fail_data = {
-    "authorization": {"code": "KJHB", "token": "c60bf762-01f7-470e-8c8f-acde06c81fed"},
+    "authorization": {
+        "code": "KJHBA",
+        "token": "c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas",
+    },
     "datas": [
         {
             "order": {
@@ -279,7 +285,10 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
         (
             (
                 "authorization",
-                (("code", "KJHB"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fed")),
+                (
+                    ("code", "KJHBA"),
+                    ("token", "c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"),
+                ),
             ),
             (
                 "datas",
@@ -400,7 +409,10 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
         (
             (
                 "authorization",
-                (("code", "KJHB"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fed")),
+                (
+                    ("code", "KJHBA"),
+                    ("token", "c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"),
+                ),
             ),
             (
                 "datas",
@@ -457,7 +469,10 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
         (
             (
                 "authorization",
-                (("code", "KJHB"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fed")),
+                (
+                    ("code", "KJHBA"),
+                    ("token", "c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"),
+                ),
             ),
             (
                 "datas",
@@ -524,7 +539,10 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
 
 # 示例请求数据
 mock_request_data_success = {
-    "authorization": {"code": "KJHB", "token": "c60bf762-01f7-470e-8c8f-acde06c81fed"},
+    "authorization": {
+        "code": "KJHBA",
+        "token": "c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas",
+    },
     "datas": [
         {
             "order": {
@@ -652,7 +670,10 @@ mock_response_data_fail_auth = {
 }
 
 mock_request_data_fail_data = {
-    "authorization": {"code": "KJHB", "token": "c60bf762-01f7-470e-8c8f-acde06c81fed"},
+    "authorization": {
+        "code": "KJHBA",
+        "token": "c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas",
+    },
     "datas": [
         {
             "order": {
@@ -723,7 +744,10 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
         (
             (
                 "authorization",
-                (("code", "KJHB"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fed")),
+                (
+                    ("code", "KJHBA"),
+                    ("token", "c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"),
+                ),
             ),
             (
                 "datas",
@@ -836,7 +860,10 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
         (
             (
                 "authorization",
-                (("code", "KJHB"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fed")),
+                (
+                    ("code", "KJHBA"),
+                    ("token", "c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"),
+                ),
             ),
             (
                 "datas",
@@ -893,7 +920,10 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
         (
             (
                 "authorization",
-                (("code", "KJHB"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fed")),
+                (
+                    ("code", "KJHBA"),
+                    ("token", "c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"),
+                ),
             ),
             (
                 "datas",
@@ -963,7 +993,10 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
         (
             (
                 "authorization",
-                (("code", "KJHB"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fed")),
+                (
+                    ("code", "KJHBA"),
+                    ("token", "c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"),
+                ),
             ),
         ): dict(
             code=0,
@@ -989,7 +1022,7 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
             msg="授权失败，请检查code和token",
             data=[],
         ),
-        (("authorization", (("code", "KJHB"), ("token", "short"))),): dict(
+        (("authorization", (("code", "KJHBA"), ("token", "short"))),): dict(
             code=400,
             msg="请求参数校验失败：token长度不足50",
             data=[],

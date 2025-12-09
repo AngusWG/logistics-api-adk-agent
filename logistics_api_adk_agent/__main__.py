@@ -35,5 +35,15 @@ def run(string) -> str:
     return run_agent_workflow(string)
 
 
+def run_with_content() -> None:
+    from logistics_api_adk_agent.agent_client import (
+        run_agent_workflow,
+        run_with_content,
+    )
+
+    run_with_content()
+    return
+
+
 if __name__ == "__main__":
     entry_point()

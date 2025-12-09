@@ -22,8 +22,8 @@ def get_tools():
         _AVAILABLE_FUNCTIONS[new_func.__name__] = new_func
         _TOOL_LIST.append(new_func)
 
-        logger.info(f"  ✅ 生成函数: {new_func.__name__}")
-
+        logger.info(f"  ✅ 生成函数: {new_func.__name__} - {api_meta.describe}")
+    logger.info("---")
     return _AVAILABLE_FUNCTIONS, _TOOL_LIST
 
 
