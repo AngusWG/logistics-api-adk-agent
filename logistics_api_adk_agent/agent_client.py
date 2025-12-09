@@ -139,3 +139,7 @@ def run_interactive_chat():
         except KeyboardInterrupt:
             print("\n👋 感谢使用，会话结束。")
             break
+
+
+if __name__ == "__main__":
+    run_interactive_chat()
