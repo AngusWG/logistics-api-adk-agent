@@ -3,14 +3,14 @@
 ## 🎯 ADK 智能体系统开发计划
 
 
-- [ ] logistics_api_adk_agent 项目结构
+- [x] logistics_api_adk_agent 项目结构
 - [x] 爬取 api 文档
-- [ ] 丢给 ai 形成 接口
+- [x] 丢给 ai 形成 接口
   - 保证通用 使用 pydantic request response 结构
   - 组装成 TOOL_LIST
   - 入口函数 增加 
-    - 交互式
-    - 一句话模式
+    - [ ] 交互式
+    - [x] 一句话模式
 - [ ] 位置日志
 - [ ] 测试
 - [ ] 错误处理
