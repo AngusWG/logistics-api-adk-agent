@@ -11,17 +11,18 @@ from typing import Any, Callable, ClassVar, Dict, List, Optional, Tuple, Type, U
 
 import uvicorn
 from fastapi import Depends, FastAPI, HTTPException, Path, Query, Request
+from mock_data import MOCK_DATA
 from pydantic import BaseModel
 
 from logistics_api_adk_agent.apis import apis_list
 from logistics_api_adk_agent.apis.base import APIInfo
 
-from mock_data import MOCK_DATA
-
 app = FastAPI(title="Dynamic API Server")
 
 
-def recursive_dict_to_sorted_tuple(data: Union[Dict, List, Any]) -> Union[Tuple, List, Any]:
+def recursive_dict_to_sorted_tuple(
+    data: Union[Dict, List, Any],
+) -> Union[Tuple, List, Any]:
     """
     递归地将字典转换为排序后的元组，以便用于查找 MOCK_DATA。
 

@@ -76,6 +76,7 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {{
 - 测试用例数据代码用和 ### 分割
 - 请只给出 新生成的代码
 - 不用给出 APIInfo 定义
+- 不要使用 confloat conint conlist 使用 python 自带类型代替
 
 """  # 使用 双大括号 {{ 和 }} 来表示字面量 { 和 }。
 

@@ -7,7 +7,7 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-from pydantic import BaseModel, Field, confloat, conint, conlist
+from pydantic import BaseModel, Field
 
 from logistics_api_adk_agent.apis.base import APIInfo
 
@@ -28,11 +28,11 @@ class Items(BaseModel):
     skucode: Optional[str] = Field(None, description="商品SKU", max_length=50)
     cnname: str = Field(..., description="物品中文名", max_length=100)
     enname: str = Field(..., description="物品英文名", max_length=100)
-    weight: confloat(gt=0) = Field(..., description="单箱物品净重(KG)")
-    mweight: Optional[confloat(gt=0)] = Field(None, description="单箱物品毛重(KG)")
-    quantity: conint(ge=1) = Field(..., description="单箱数量")
+    weight: float = Field(..., description="单箱物品净重(KG)")
+    mweight: Optional[float] = Field(None, description="单箱物品毛重(KG)")
+    quantity: int = Field(..., description="单箱数量")
     quantityunit: Optional[str] = Field(None, description="数量单位", max_length=10)
-    price: confloat(ge=0) = Field(..., description="申报单价")
+    price: float = Field(..., description="申报单价")
     declarecurrency: str = Field(..., description="申报币别", max_length=10)
     hscode: Optional[str] = Field(None, description="海关编码", max_length=50)
     destinationhscode: Optional[str] = Field(
@@ -56,10 +56,10 @@ class Items(BaseModel):
     imgext: Optional[str] = Field(
         None, description="产品图片格式（.gif、.jpg、.png、.jpeg）"
     )
-    isbatterys: conint(ge=0, le=1) = Field(..., description="是否带电(0：否，1：是)")
-    ismagnets: conint(ge=0, le=1) = Field(..., description="是否带磁(0：否，1：是)")
-    isliquids: conint(ge=0, le=1) = Field(..., description="是否液体(0：否，1：是)")
-    ispowders: conint(ge=0, le=1) = Field(..., description="是否粉末(0：否，1：是)")
+    isbatterys: int = Field(..., description="是否带电(0：否，1：是)")
+    ismagnets: int = Field(..., description="是否带磁(0：否，1：是)")
+    isliquids: int = Field(..., description="是否液体(0：否，1：是)")
+    ispowders: int = Field(..., description="是否粉末(0：否，1：是)")
 
 
 class Volumes(BaseModel):
@@ -71,11 +71,11 @@ class Volumes(BaseModel):
     customerchildnumber: Optional[str] = Field(
         None, description="客户子单号", max_length=50
     )
-    prelength: confloat(gt=0) = Field(..., description="长(CM)")
-    prewidth: confloat(gt=0) = Field(..., description="宽(CM)")
-    preheight: confloat(gt=0) = Field(..., description="高(CM)")
-    prerweight: confloat(gt=0) = Field(..., description="单件重量(KG)")
-    palletnum: Optional[conint(ge=0)] = Field(None, description="托盘件数")
+    prelength: float = Field(..., description="长(CM)")
+    prewidth: float = Field(..., description="宽(CM)")
+    preheight: float = Field(..., description="高(CM)")
+    prerweight: float = Field(..., description="单件重量(KG)")
+    palletnum: Optional[int] = Field(None, description="托盘件数")
 
 
 class Order(BaseModel):
@@ -86,19 +86,13 @@ class Order(BaseModel):
     )
     fbanumber: Optional[str] = Field(None, description="FBA ID", max_length=50)
     poanumber: Optional[str] = Field(None, description="POANumber", max_length=50)
-    number: conint(ge=1) = Field(..., description="总件数")
-    forecastweight: confloat(gt=0) = Field(..., description="预报总重量(KG)")
-    forecastsquare: Optional[confloat(ge=0)] = Field(None, description="预报方数")
-    isbattery: conint(ge=0, le=1) = Field(..., description="是否带电(0：否，1：是)")
-    ismagnet: Optional[conint(ge=0, le=1)] = Field(
-        None, description="是否带磁(0：否，1：是)"
-    )
-    isliquid: Optional[conint(ge=0, le=1)] = Field(
-        None, description="是否液体(0：否，1：是)"
-    )
-    ispowder: Optional[conint(ge=0, le=1)] = Field(
-        None, description="是否粉末(0：否，1：是)"
-    )
+    number: int = Field(..., description="总件数")
+    forecastweight: float = Field(..., description="预报总重量(KG)")
+    forecastsquare: Optional[float] = Field(None, description="预报方数")
+    isbattery: int = Field(..., description="是否带电(0：否，1：是)")
+    ismagnet: Optional[int] = Field(None, description="是否带磁(0：否，1：是)")
+    isliquid: Optional[int] = Field(None, description="是否液体(0：否，1：是)")
+    ispowder: Optional[int] = Field(None, description="是否粉末(0：否，1：是)")
     packagetypecode: Optional[str] = Field(
         None,
         description="包裹类型 [ G：礼品，C：商品货样，D：文件，O：其它 ]",
@@ -107,12 +101,8 @@ class Order(BaseModel):
     goodstypecode: Optional[str] = Field(
         None, description="货物类型 [ WPX：包裹，DOC：文件，PAK：PAK袋 ]", max_length=3
     )
-    isinsurance: Optional[conint(ge=0, le=1)] = Field(
-        None, description="是否投保(0：否，1：是)"
-    )
-    insurancevalue: Optional[confloat(ge=0)] = Field(
-        None, description="投保金额, 投保则必需"
-    )
+    isinsurance: Optional[int] = Field(None, description="是否投保(0：否，1：是)")
+    insurancevalue: Optional[float] = Field(None, description="投保金额, 投保则必需")
     insurancetypepkid: Optional[int] = Field(None, description="投保类型, 投保则必需")
     insurancecurrency: Optional[str] = Field(None, description="投保币别, 投保则必需")
     declaretypepkid: Optional[int] = Field(None, description="报关类型")
@@ -260,15 +250,13 @@ class Order(BaseModel):
     eorinumber: Optional[str] = Field(None, description="EORI/企业号", max_length=50)
     vatcorpname: Optional[str] = Field(None, description="VAT公司名称", max_length=100)
     vataddress: Optional[str] = Field(None, description="VAT公司地址", max_length=200)
-    freight: Optional[confloat(ge=0)] = Field(None, description="打单运费")
-    extrafees: Optional[confloat(ge=0)] = Field(None, description="打单杂费")
+    freight: Optional[float] = Field(None, description="打单运费")
+    extrafees: Optional[float] = Field(None, description="打单杂费")
     currencycode: Optional[str] = Field(None, description="费用币别", max_length=5)
     residential: Optional[str] = Field(
         None, description="是否住宅地址（0：否，1：是）", max_length=1
     )
-    ispaperless: Optional[conint(ge=1, le=2)] = Field(
-        None, description="是否无纸化（2：是）"
-    )
+    ispaperless: Optional[int] = Field(None, description="是否无纸化（2：是）")
     deliverysitecode: Optional[str] = Field(None, description="预计交货站点")
     deliverydate: Optional[str] = Field(None, description="预计交货时间")
     resdelivertime: Optional[str] = Field(
@@ -283,13 +271,13 @@ class Order(BaseModel):
 
 class Data(BaseModel):
     order: Order = Field(..., description="每个运单数据")
-    volumes: conlist(Volumes, min_length=1) = Field(..., description="材积信息")
-    items: conlist(Items, min_length=1) = Field(..., description="物品信息")
+    volumes: List[Volumes] = Field(..., description="材积信息")
+    items: List[Items] = Field(..., description="物品信息")
 
 
 class CreateFbaOrderRequest(BaseModel):
     authorization: Authorization = Field(..., description="接口效验信息")
-    datas: conlist(Data, min_length=1) = Field(..., description="本次提交数据集")
+    datas: List[Data] = Field(..., description="本次提交数据集")
 
 
 # 响应数据模型
@@ -302,9 +290,7 @@ class Child(BaseModel):
 
 
 class ResponseData(BaseModel):
-    code: conint(ge=-1, le=0) = Field(
-        ..., description="下单是否成功 0：表示接口请求通过，-1：表示失败"
-    )
+    code: int = Field(..., description="下单是否成功 0：表示接口请求通过，-1：表示失败")
     msg: str = Field(..., description="说明信息")
     customernumber: Optional[str] = Field(None, description="客户参考号1")
     systemnumber: Optional[str] = Field(None, description="我方系统单号")
@@ -313,7 +299,7 @@ class ResponseData(BaseModel):
 
 
 class CreateFbaOrderResponse(BaseModel):
-    code: conint(ge=0) = Field(
+    code: int = Field(
         ..., description="接口请求是否通过 0：表示接口请求通过，其他表示失败"
     )
     msg: str = Field(..., description="说明信息")

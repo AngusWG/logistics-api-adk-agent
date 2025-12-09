@@ -5,9 +5,9 @@
 # @Email  : z740713651@outlook.com
 # @File   : currency.py
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple
+from typing import List
 
-from pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, Field
 
 from logistics_api_adk_agent.apis.base import APIInfo
 
@@ -49,4 +49,3 @@ query_currency = APIInfo(
     request_model=CurrencyRequest,
     response_model=CurrencyResponse,
 )
-

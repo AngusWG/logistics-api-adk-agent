@@ -19,7 +19,10 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
         (
             (
                 "authorization",
-                (("code", "KJHBA"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas")),
+                (
+                    ("code", "KJHBA"),
+                    ("token", "c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"),
+                ),
             ),
         ): dict(
             code=0,
@@ -66,7 +69,7 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
             msg="请求参数校验失败：token长度不足50",
             data=[],
         ),
-    }
+    },
 }
 # 示例请求数据
 mock_request_data_success = {
@@ -270,7 +273,8 @@ mock_response_data_fail_data = {
     ],
 }
 
-MOCK_DATA: Dict[Tuple[str, str], Any] = {**MOCK_DATA,
+MOCK_DATA: Dict[Tuple[str, str], Any] = {
+    **MOCK_DATA,
     ("create_fba_draft", "post"): {
         (
             (
@@ -713,7 +717,8 @@ mock_response_data_fail_data = {
     ],
 }
 
-MOCK_DATA: Dict[Tuple[str, str], Any] = {**MOCK_DATA,
+MOCK_DATA: Dict[Tuple[str, str], Any] = {
+    **MOCK_DATA,
     ("create_order_draft", "post"): {
         (
             (
@@ -952,7 +957,8 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {**MOCK_DATA,
     },
 }
 
-MOCK_DATA: Dict[Tuple[str, str], Any] = {**MOCK_DATA,
+MOCK_DATA: Dict[Tuple[str, str], Any] = {
+    **MOCK_DATA,
     ("query_currency", "post"): {
         (
             (
@@ -988,5 +994,5 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {**MOCK_DATA,
             msg="请求参数校验失败：token长度不足50",
             data=[],
         ),
-    }
+    },
 }
