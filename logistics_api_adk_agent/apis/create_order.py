@@ -292,6 +292,31 @@ class ResponseData(BaseModel):
 
 
 class CreateOrderResponse(BaseModel):
+    """
+    >>> from logistics_api_adk_agent import run
+    >>> # 场景 1: 批量下单到草稿 - 成功案例 (使用 create_order_draft)
+    >>> # 模拟用户的自然语言请求，包含授权信息和下单意图
+    >>> prompt_success = "我需要创建一批运单到草稿，客户编码是 KJHBA，授权码是 60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas，货物信息是 5 件货，总重 77.75KG，渠道 HK_TNT，收件地址是俄罗斯 RU，收件人 Nwabisa Mkaka，邮编 13958，详情：有 5 个包裹，长宽高都为 50CM，单件重 15.55KG，内含 10 个手机壳，单价 5.87 USD，不带电、磁、液、粉"
+    >>> res_success = run(prompt_success)
+    >>> assert "调用成功" in res_success
+    >>> assert "下单成功" in res_success
+    >>> assert "T620200611-1001" in res_success # 检查客户参考号
+    >>> assert "EV2145664012CN" in res_success # 检查是否返回运单号
+    >>> assert "子单号" in res_success # 检查是否返回子单号信息
+    >>> assert "是否偏远" in res_success # 检查是否返回 isRemote 字段
+    >>> # 场景 2: 授权失败案例 (code=1001)
+    >>> prompt_auth_fail = "我需要创建运单到草稿箱，客户编码 ERROR，授权码 invalid-token-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx，我有一件货，总重 1KG，渠道 HK_TNT，收件人 Test，地址在中国 CN"
+    >>> res_auth_fail = run(prompt_auth_fail)
+    >>> assert "授权失败" in res_auth_fail
+    >>> assert "1001" in res_auth_fail
+    >>> # 场景 3: 业务数据校验失败案例 (返回 code=0, data.code=-1)
+    >>> # 模拟请求中缺失了必填的 customernumber1 字段
+    >>> prompt_data_fail = "我要创建运单到草稿箱，客户编码 KJHBA，授权码 60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas，货物信息是 5 件货，渠道 HK_TNT，收件地址是俄罗斯 RU，但这次没有提供客户参考号"
+    >>> res_data_fail = run(prompt_data_fail)
+    >>> assert "运单客户参考号1" in res_data_fail
+    >>> assert "-1" in res_data_fail
+    """
+
     code: int = Field(
         ..., description="接口请求是否通过 0：表示接口请求通过，其他表示失败"
     )

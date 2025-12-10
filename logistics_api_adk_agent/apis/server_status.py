@@ -22,7 +22,7 @@ class StatusResponse(BaseModel):
 
 server_status = APIInfo(
     name="server_status",
-    describe="服务器状态查询",
+    describe="服务器状态查询 测试端 fastapi 接口专用",
     url="/status",
     method="GET",
     request_model=StatusRequest,

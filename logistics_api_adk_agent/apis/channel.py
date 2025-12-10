@@ -36,6 +36,23 @@ class ChannelData(BaseModel):
 
 # 响应数据模型
 class ChannelResponse(BaseModel):
+    """
+    >>> from logistics_api_adk_agent import run
+    >>> # 成功查询的场景
+    >>> res_success = run("帮我查一下渠道信息 code KJHBA token 60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas")
+    >>> assert "CN_EMS" in res_success
+    >>> assert "中国邮政" in res_success
+    >>> assert "香港TNT" in res_success
+    >>> # 授权失败的场景
+    >>> res_auth_fail = run("帮我查一下渠道信息 code ERROR token invalid-token-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+    >>> assert "授权失败" in res_auth_fail
+    >>> assert "1001" in res_auth_fail
+    >>> # 参数校验失败的场景 (token 长度不足)
+    >>> res_param_fail = run("帮我查一下渠道信息 code KJHBA token short")
+    >>> assert "请求参数校验失败" in res_param_fail
+    >>> assert "token长度不足50" in res_param_fail
+    """
+
     code: int = Field(
         ..., description="接口请求是否通过, 0：表示接口请求通过，其他表示失败"
     )
