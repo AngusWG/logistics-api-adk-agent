@@ -33,6 +33,13 @@ class CurrencyData(BaseModel):
 
 # 响应数据模型
 class CurrencyResponse(BaseModel):
+    """
+    >>> from logistics_api_adk_agent import run
+    >>> res = run("帮我查一下系统可用的币别 code KJHBA token c60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas")
+    >>> assert "CNY" in res
+    >>> assert "港币" in res
+    """
+
     code: int = Field(
         ..., description="接口请求是否通过, 0：表示接口请求通过，其他表示失败"
     )
