@@ -40,7 +40,7 @@ mock_time = datetime.now().isoformat()
 MOCK_DATA: Dict[Tuple[str, str], Any] = {
     ("query_channel", "post"): {
         (
-            ("authorization", (("code", "KJHB"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fed"))),
+            ("authorization", (("code", "KJHBA"), ("token", "60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"))),
         ): dict(
             code=0,
             msg="调用成功",
@@ -58,7 +58,7 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
             data=[],
         ),
         (
-            ("authorization", (("code", "KJHB"), ("token", "short"))),
+            ("authorization", (("code", "KJHBA"), ("token", "short"))),
         ): dict(
             code=400,
             msg="请求参数校验失败：token长度不足50",

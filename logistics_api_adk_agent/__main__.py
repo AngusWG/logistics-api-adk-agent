@@ -36,12 +36,9 @@ def run(string) -> str:
 
 
 def run_with_content() -> None:
-    from logistics_api_adk_agent.agent_client import (
-        run_agent_workflow,
-        run_with_content,
-    )
+    from logistics_api_adk_agent.agent_client import run_interactive_chat
 
-    run_with_content()
+    run_interactive_chat()
     return
 
 

@@ -207,8 +207,8 @@ mock_time = datetime.now().isoformat()
 # 示例请求数据
 mock_request_data_success = {
     "authorization": {
-        "code": "KJHB",
-        "token": "c60bf762-01f7-470e-8c8f-acde06c81fed"
+        "code": "KJHBA",
+        "token": "60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"
     },
     "datas": [
         {
@@ -318,8 +318,8 @@ mock_response_data_fail_auth = {
 
 mock_request_data_fail_data = {
     "authorization": {
-        "code": "KJHB",
-        "token": "c60bf762-01f7-470e-8c8f-acde06c81fed"
+        "code": "KJHBA",
+        "token": "60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"
     },
     "datas": [
         {
@@ -388,7 +388,7 @@ mock_response_data_fail_data = {
 MOCK_DATA: Dict[Tuple[str, str], Any] = {
     ("create_order_draft", "post"): {
         (
-            ("authorization", (("code", "KJHB"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fed"))),
+            ("authorization", (("code", "KJHBA"), ("token", "60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"))),
             ("datas", (
                 (
                     ("order", (("channelid", "HK_TNT"), ("customernumber1", "T620200611-1001"), ("number", 5), ("forecastweight", 77.75), ("isbattery", 0), ("countrycode", "RU"), ("consigneename", "Nwabisa Mkaka"), ("consigneeaddress1", "nah Iskan 2 Khamis"), ("consigneecity", "Khamis Mushait"), ("consigneezipcode", "13958"), ("consigneeprovince", "Asir"))),
@@ -409,7 +409,7 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
             )),
         ): mock_response_data_fail_auth,
         (
-            ("authorization", (("code", "KJHB"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fed"))),
+            ("authorization", (("code", "KJHBA"), ("token", "60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"))),
             ("datas", (
                 (
                     # customernumber1 缺失，模拟数据校验失败
@@ -422,7 +422,7 @@ MOCK_DATA: Dict[Tuple[str, str], Any] = {
     },
     ("create_order_forecast", "post"): {
         (
-            ("authorization", (("code", "KJHB"), ("token", "c60bf762-01f7-470e-8c8f-acde06c81fed"))),
+            ("authorization", (("code", "KJHBA"), ("token", "60bf762-01f7-470e-8c8f-acde06c81fedaabbvvasdasdas"))),
             ("datas", (
                 (
                     ("order", (("channelid", "HK_TNT"), ("customernumber1", "T620200611-1002"), ("number", 5), ("forecastweight", 77.75), ("isbattery", 0), ("countrycode", "RU"), ("consigneename", "Nwabisa Mkaka"), ("consigneeaddress1", "nah Iskan 2 Khamis"), ("consigneecity", "Khamis Mushait"), ("consigneezipcode", "13958"), ("consigneeprovince", "Asir"))),
