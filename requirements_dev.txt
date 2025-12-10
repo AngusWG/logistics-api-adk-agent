@@ -5,7 +5,11 @@ pytest-timeout
 pytest-benchmark
 isort
 typing_extensions
-gevent
+pip-tools
+tqdm
+fastapi
+flask
+uvicorn[standard]==0.35.0
 
 # Linting
 flake8
